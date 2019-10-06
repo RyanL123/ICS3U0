@@ -1,4 +1,6 @@
-import datetime, random
+import datetime
+import random
+import sys
 
 # initialize coins and portfolio
 coins = ["BTC", "ETH", "XRP", "LTC"]
@@ -8,7 +10,7 @@ holdings = {
     "ETH": 0.0,
     "XRP": 0.0,
     "LTC": 0.0,
-    "CAD": 0.0
+    "CAD": 10000.0
 }
 
 conversion_rate = {
@@ -30,7 +32,11 @@ def init():
     print("Welcome to CryptoSim, a game where you can lose all your money in crypto without actually losing anything!")
     print("The rules of the game are simple. Buy low, sell high and don't go broke.")
     print("Every day, you'll get a chance to either buy and sell crypto, or simply make no transactions")
-    print("To start the game, please type Y. To exit the program, please type N")
+    print("To start the game, type Y. To exit the program, type N")
+    choice = input()
+    if choice.capitalize() == "Y":
+        return True
+    return False
 
 
 def increment_date():
@@ -67,31 +73,33 @@ def transaction():
     # repeat until stopped by user
     while repeat:
         option = input("Enter B to buy, S to sell")
+        option = option.capitalize()
 
         if option == "B":
-            crypto = input("Please enter the crypto you would like to buy followed by the amount in CAD")
-            amount = float(input())
-            crypto.capitalize()
+            crypto = input("Please enter the crypto you would like to buy")
+            amount = float(input("Please enter the amount you would like to buy"))
+            crypto.upper()
 
             # not enough money
             if holdings["CAD"] < amount:
-                print("Sorry, you do not have enough money to buy %d %s" %(amount, crypto))
+                print("Sorry, you do not have enough money to buy %d %s" % (amount, crypto))
             else:
                 # add the crypto to wallet according to conversion rate
                 holdings[crypto] += amount/conversion_rate[crypto]
                 holdings["CAD"] -= amount
                 buy_again = input("Would you like to make another transaction? Enter Y for yes, N for no")
+                buy_again = buy_again.capitalize()
                 if buy_again == "N":
                     repeat = False
 
         elif option == "S":
-            crypto = input("Please enter the crypto you would like to sell followed by the amount")
-            amount = float(input())
-            crypto.capitalize()
+            crypto = input("Please enter the crypto you would like to sell")
+            amount = float(input("Please enter the amount you would like to sell"))
+            crypto.upper()
 
             # not enough crypto
             if holdings[crypto] < amount:
-                print("Sorry, you do not have enough %s to sell" % (crypto))
+                print("Sorry, you do not have enough %s to sell" % crypto)
             else:
                 # add CAD to wallet according to conversion rate
                 holdings[crypto] -= amount
@@ -100,15 +108,35 @@ def transaction():
                 if buy_again == "N":
                     repeat = False
 
+
 def modify_prices():
     # randomizes the chances of good and bad news
     random.seed(datetime.datetime.now())
     decider = random.randint(1, 1000)
 
+
 def check_portfolio():
     for i in holdings:
-        print("%s: %.2f" %(i, holdings[i]))
+        print("%s: %.2f" % (i, holdings[i]))
+
 
 def check_conversion_rate():
     for i in conversion_rate:
-        print("1 %s is worth %.2f CAD" %(i, conversion_rate[i]))
+        print("1 %s is worth %.2f CAD" % (i, conversion_rate[i]))
+
+
+def total_asset():
+    total = 0
+    for i in holdings:
+        if i != "CAD":
+            total += holdings[i]*conversion_rate[i]
+        else:
+            total += holdings[i]
+    return total
+
+
+if init():
+    while total_asset() >= 0:
+        print("The date is %d/%d/%d" % (year, month, day))
+        increment_date()
+        transaction()
