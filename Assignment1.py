@@ -27,11 +27,12 @@ month = int(time.month)
 day = int(time.day)
 days_past = 0
 
-
+# displays instructions
 def init():
     print("Welcome to CryptoSim, a game where you can lose all your money in crypto without actually losing anything!")
     print("The rules of the game are simple. Buy low, sell high and don't go broke.")
     print("Every day, you'll get a chance to either buy and sell crypto, or simply make no transactions")
+    print("To see a list of all commands, type the word command when you're in game")
     print("To start the game, type Y. To exit the program, type N")
     choice = input()
     if choice.capitalize() == "Y":
@@ -39,6 +40,7 @@ def init():
     return False
 
 
+# increase date by 1 every turn
 def increment_date():
     global day, month, year, days_past
     day += 1
@@ -67,6 +69,7 @@ def increment_date():
         year += 1
 
 
+# buy/sell crypto
 def transaction():
     repeat = True
 
@@ -77,8 +80,12 @@ def transaction():
 
         if option == "B":
             crypto = input("Please enter the crypto you would like to buy")
-            amount = float(input("Please enter the amount you would like to buy"))
-            crypto.upper()
+            amount = float(input("Please enter the amount you would like to buy in CAD"))
+            crypto = crypto.upper()
+            confirm = input("1 %s is worth %i CAD, do you want to continue? Y | N" % (crypto, conversion_rate[crypto]))
+            if confirm.upper() == 'N':
+                print("Canceling")
+                return
 
             # not enough money
             if holdings["CAD"] < amount:
@@ -94,9 +101,12 @@ def transaction():
 
         elif option == "S":
             crypto = input("Please enter the crypto you would like to sell")
-            amount = float(input("Please enter the amount you would like to sell"))
-            crypto.upper()
-
+            amount = float(input("Please enter the amount you would like to sell in %s" % (crypto.upper())))
+            crypto = crypto.upper()
+            confirm = input("1 %s is worth %i CAD, do you want to continue? Y | N" % (crypto, conversion_rate[crypto]))
+            if confirm.upper() == 'N':
+                print("Canceling")
+                return
             # not enough crypto
             if holdings[crypto] < amount:
                 print("Sorry, you do not have enough %s to sell" % crypto)
@@ -109,22 +119,27 @@ def transaction():
                     repeat = False
 
 
+# TODO
+# Modify prices based on seed
 def modify_prices():
     # randomizes the chances of good and bad news
     random.seed(datetime.datetime.now())
     decider = random.randint(1, 1000)
 
 
+# display the player's portfolio
 def check_portfolio():
     for i in holdings:
         print("%s: %.2f" % (i, holdings[i]))
 
 
+# display the current conversion rate
 def check_conversion_rate():
     for i in conversion_rate:
         print("1 %s is worth %.2f CAD" % (i, conversion_rate[i]))
 
 
+# returns the total asset the player has
 def total_asset():
     total = 0
     for i in holdings:
@@ -135,8 +150,34 @@ def total_asset():
     return total
 
 
+def command():
+    print("PORT: Show portfolio")
+    print("RATE: Show conversion rates")
+    print("END: Move on to next day")
+    print("EXIT: Exit program")
+
+
 if init():
     while total_asset() >= 0:
         print("The date is %d/%d/%d" % (year, month, day))
         increment_date()
-        transaction()
+        action = input()
+        action = action.upper()
+        while action != "END":
+            if action == "BUY" or action == "SELL":
+                transaction()
+            elif action == "PORT":
+                check_portfolio()
+            elif action == "RATE":
+                check_conversion_rate()
+            elif action == "COMMAND":
+                command()
+            elif action == "EXIT":
+                print("Exiting...")
+                sys.exit(0)
+            action = input()
+            action = action.upper()
+    print("You went broke! Game Over!")
+
+else:
+    print("Exiting...")
