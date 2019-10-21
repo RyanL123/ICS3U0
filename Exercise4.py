@@ -4,15 +4,15 @@
 #
 # Author:      767571
 # Created:     Oct-15-2019
-# Updated:     Oct-15-2019
+# Updated:     Oct-21-2019
 #-----------------------------------------------------------------------------
 
 sum = 0
 while True:
-    a = int(input())
-    if a == -1:
+    integer = int(input())
+    if integer == -1:
         break
-    sum += a
+    sum += integer
 
 for i in range(sum):
     print("*"*i)
