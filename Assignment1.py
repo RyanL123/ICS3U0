@@ -1,183 +1,271 @@
-import datetime
-import random
 import sys
 
-# initialize coins and portfolio
-coins = ["BTC", "ETH", "XRP", "LTC"]
 
-holdings = {
-    "BTC": 0.0,
-    "ETH": 0.0,
-    "XRP": 0.0,
-    "LTC": 0.0,
-    "CAD": 10000.0
-}
+class Character:
+    name = ""
+    age = 0
+    height = 0
+    level = 0
+    ancestry = ""
+    character_class = ""
+    ancestry_feat = ""
+    heritage = ""
+    backpack = []
+    stats = {
+        "Str": 0,
+        "Dex": 0,
+        "Con": 0,
+        "Int": 0,
+        "Wis": 0,
+        "Cha": 0
+    }
 
-conversion_rate = {
-    "BTC": 15000.0,
-    "ETH": 300.0,
-    "XRP": 0.30,
-    "LTC": 90.0,
-}
+    # constructor
+    def __init__(self, age, height, level, ancestry, character_class, ancestry_feat, heritage, stats):
+        self.age = age
+        self.height = height
+        self.level = level
+        self.ancestry = ancestry
+        self.character_class = character_class
+        self.ancestry_feat = ancestry_feat
+        self.heritage = heritage
+        self.stats = stats
 
-# initialize date
-time = datetime.datetime.now()
-year = int(time.year)
-month = int(time.month)
-day = int(time.day)
-days_past = 0
 
-# displays instructions
 def init():
-    print("Welcome to CryptoSim, a game where you can lose all your money in crypto without actually losing anything!")
-    print("The rules of the game are simple. Buy low, sell high and don't go broke.")
-    print("Every day, you'll get a chance to either buy and sell crypto, or simply make no transactions")
-    print("To see a list of all commands, type the word command when you're in game")
-    print("To start the game, type Y. To exit the program, type N")
-    choice = input()
-    if choice.capitalize() == "Y":
-        return True
-    return False
+    print("Welcome to Pathfinder 2e Character Builder!")
+    user_choice = ""
+    while user_choice != 'Y' and user_choice != 'N':
+        user_choice = input("(Y) Start | (N) Exit").upper()
+        if user_choice == 'N':
+            sys.exit(0)
 
 
-# increase date by 1 every turn
-def increment_date():
-    global day, month, year, days_past
-    day += 1
-    days_past += 1
-    # checks for months with 31 days
-    if (month == 1 or month == 3 or month == 5 or month == 7 or month == 8 or month == 9 or month == 11) and day > 31:
-        day = 0
-        month += 1
+def choose_ancestry():
+    ancestries = [
+        "DWARF",
+        "ELF",
+        "GNOME",
+        "GOBLIN",
+        "HALFLING",
+        "HUMAN",
+    ]
+    # prints to the user all available options
+    for i in range(len(ancestries)):
+        print("%i) %s" % (i+1, ancestries[i]))
 
-    # checks for february and leap years
-    if month == 2:
-        if year % 4 == 0 and day > 29:
-            day = 0
-            month += 1
-        elif day > 28:
-            day = 0
-            month += 1
-
-    # check for months with 30 days
-    if (month == 4 or month == 6 or month == 10 or month == 12) and day > 30:
-        day = 0
-        month += 1
-
-    if month > 12:
-        month = 0
-        year += 1
+    # Repeatedly prompt the user until they enter a valid ancestry.
+    # Input must be spelt correctly, but spaces and capitalization do not matter.
+    choice = ""
+    while choice.replace(" ", "").upper() not in ancestries:
+        choice = input("Type in your chosen ancestry (Invalid input will cause another prompt): ")
+    return choice.replace(" ", "").upper()
 
 
-# buy/sell crypto
-def transaction():
-    repeat = True
+def choose_heritage(ancestry):
+    dwarf = [
+        "ANCIENT-BLOODED DWARF",
+        "ANVIL DWARF",
+        "DEATH WARDEN DWARF",
+        "ELEMENTAL HEART DWARF",
+        "FORGE DWARF",
+        "OATHKEEPER DWARF",
+        "ROCK DWARF",
+        "STRONG-BLOODED DWARF"
+    ]
+    elf = [
+        "ANCIENT ELF",
+        "ARCTIC ELF",
+        "CAVERN ELF",
+        "DESERT ELF",
+        "SEER ELF",
+        "WHISPER ELF",
+        "WOODLAND ELF",
+    ]
+    gnome = [
+        "CHAMELEON GNOME",
+        "FEY-TOUCHED GNOME",
+        "SENSATE GNOME",
+        "UMBRAL GNOME",
+        "VIVACIOUS GNOME",
+        "WELLSPRING GNOME"
+    ]
+    goblin = [
+        "CHARHIDE GOBLIN",
+        "IRONGUT GOBLIN",
+        "RAZORTOOTH GOBLIN",
+        "SNOW GOBLIN",
+        "TAILED GOBLIN",
+        "TREEDWELLER GOBLIN",
+        "UNBREAKABLE GOBLIN"
+    ]
+    halfling = [
+        "GUTSY HALFLING",
+        "HILLOCK HALFLING",
+        "NOMADIC HALFLING",
+        "TWILIGHT HALFLING",
+        "WILDWOOD HALFLING"
+    ]
+    human = [
+        "SKILLED HERITAGE",
+        "VERSATILE HERITAGE",
+        "WINTERTOUCHED HERITAGE"
+    ]
 
-    # repeat until stopped by user
-    while repeat:
-        option = input("Enter B to buy, S to sell")
-        option = option.capitalize()
+    # Displays the appropriate heritage for the given ancestry
+    # Repeatedly prompt the user until they enter a valid heritage.
+    # Input must be spelt correctly, and spacing must be correct. Capitalization does not matter.
+    if ancestry == "DWARF":
+        for i in range(len(dwarf)):
+            print("%i) %s" % (i+1, dwarf[i]))
+        choice = ""
+        while choice.upper() not in dwarf:
+            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
+        return choice.upper()
 
-        if option == "B":
-            crypto = input("Please enter the crypto you would like to buy")
-            amount = float(input("Please enter the amount you would like to buy in CAD"))
-            crypto = crypto.upper()
-            confirm = input("1 %s is worth %i CAD, do you want to continue? Y | N" % (crypto, conversion_rate[crypto]))
-            if confirm.upper() == 'N':
-                print("Canceling")
-                return
+    elif ancestry == "ELF":
+        for i in range(len(elf)):
+            print("%i) %s" % (i+1, elf[i]))
+        choice = ""
+        while choice.upper() not in elf:
+            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
+        return choice.upper()
 
-            # not enough money
-            if holdings["CAD"] < amount:
-                print("Sorry, you do not have enough money to buy %d %s" % (amount, crypto))
-            else:
-                # add the crypto to wallet according to conversion rate
-                holdings[crypto] += amount/conversion_rate[crypto]
-                holdings["CAD"] -= amount
-                buy_again = input("Would you like to make another transaction? Enter Y for yes, N for no")
-                buy_again = buy_again.capitalize()
-                if buy_again == "N":
-                    repeat = False
+    elif ancestry == "GNOME":
+        for i in range(len(gnome)):
+            print("%i) %s" % (i+1, gnome[i]))
+        choice = ""
+        while choice.upper() not in gnome:
+            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
+        return choice.upper()
 
-        elif option == "S":
-            crypto = input("Please enter the crypto you would like to sell")
-            amount = float(input("Please enter the amount you would like to sell in %s" % (crypto.upper())))
-            crypto = crypto.upper()
-            confirm = input("1 %s is worth %i CAD, do you want to continue? Y | N" % (crypto, conversion_rate[crypto]))
-            if confirm.upper() == 'N':
-                print("Canceling")
-                return
-            # not enough crypto
-            if holdings[crypto] < amount:
-                print("Sorry, you do not have enough %s to sell" % crypto)
-            else:
-                # add CAD to wallet according to conversion rate
-                holdings[crypto] -= amount
-                holdings["CAD"] += amount*conversion_rate[crypto]
-                buy_again = input("Would you like to make another transaction? Enter Y for yes, N for no")
-                if buy_again == "N":
-                    repeat = False
+    elif ancestry == "GOBLIN":
+        for i in range(len(goblin)):
+            print("%i) %s" % (i+1, goblin[i]))
+        choice = ""
+        while choice.upper() not in goblin:
+            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
+        return choice.upper()
 
+    elif ancestry == "HALFLING":
+        for i in range(len(halfling)):
+            print("%i) %s" % (i+1, halfling[i]))
+        choice = ""
+        while choice.upper() not in halfling:
+            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
+        return choice.upper()
 
-# TODO
-# Modify prices based on seed
-def modify_prices():
-    # randomizes the chances of good and bad news
-    random.seed(datetime.datetime.now())
-    decider = random.randint(1, 1000)
+    elif ancestry == "HUMAN":
+        for i in range(len(human)):
+            print("%i) %s" % (i+1, human[i]))
+        choice = ""
+        while choice.upper() not in human:
+            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
+        return choice.upper()
 
 
-# display the player's portfolio
-def check_portfolio():
-    for i in holdings:
-        print("%s: %.2f" % (i, holdings[i]))
-
-
-# display the current conversion rate
-def check_conversion_rate():
-    for i in conversion_rate:
-        print("1 %s is worth %.2f CAD" % (i, conversion_rate[i]))
-
-
-# returns the total asset the player has
-def total_asset():
-    total = 0
-    for i in holdings:
-        if i != "CAD":
-            total += holdings[i]*conversion_rate[i]
-        else:
-            total += holdings[i]
-    return total
-
-
-def command():
-    print("PORT: Show portfolio")
-    print("RATE: Show conversion rates")
-    print("END: Move on to next day")
-    print("EXIT: Exit program")
-
-
-if init():
-    while total_asset() >= 0:
-        print("The date is %d/%d/%d" % (year, month, day))
-        increment_date()
-        action = input()
-        action = action.upper()
-        while action != "END":
-            if action == "BUY" or action == "SELL":
-                transaction()
-            elif action == "PORT":
-                check_portfolio()
-            elif action == "RATE":
-                check_conversion_rate()
-            elif action == "COMMAND":
-                command()
-            elif action == "EXIT":
-                print("Exiting...")
-                sys.exit(0)
-            action = input()
-            action = action.upper()
-    print("You went broke! Game Over!")
-
-else:
-    print("Exiting...")
+def choose_background():
+    options = [
+        "Academic",
+        "Acolyte",
+        "Acrobat",
+        "Adherent",
+        "Animal Whisperer",
+        "Archaeologist",
+        "Artifact Seeker",
+        "Artisan",
+        "Artist",
+        "Aspiring Free Captain",
+        "Aspiring River Monarch",
+        "Barkeep",
+        "Barrister",
+        "Black Market Smuggler",
+        "Bounty Hunter",
+        "Bright Lion",
+        "Charlatan",
+        "Charmer",
+        "Child of Squalor",
+        "Child of the City",
+        "Criminal",
+        "Crusader",
+        "Cursed Family",
+        "Desert Tracker",
+        "Detective",
+        "Emissary",
+        "Entertainer",
+        "Expatriate",
+        "Faithful",
+        "Farmhand",
+        "Field Medic",
+        "Follower",
+        "Fortune Teller",
+        "Freed Slave",
+        "Gambler",
+        "Gladiator",
+        "Goblinblood Orphan",
+        "Grand Council Bureaucrat",
+        "Guard",
+        "Guerrilla",
+        "Herbalist",
+        "Hermit",
+        "Hopeful",
+        "Hunter",
+        "Inlander",
+        "Laborer",
+        "Loyalist",
+        "Lumberjack",
+        "Mammoth Speaker",
+        "Mantis Scion",
+        "Martial Disciple",
+        "Menagerie Dung Sweeper",
+        "Mercenary",
+        "Merchant",
+        "Miner",
+        "Mystic",
+        "Name - Bearer",
+        "Noble",
+        "Nomad",
+        "Onyx Trader",
+        "Ooze - Tender",
+        "Partisan",
+        "Pearl Diver",
+        "Perfection Seeker",
+        "Press - Ganged",
+        "Prisoner",
+        "Prodigy",
+        "Purveyor of the Bizarre",
+        "Quick",
+        "Raider",
+        "Rancher",
+        "Rebel",
+        "Reclaimer",
+        "Reformer",
+        "Refugee",
+        "Restorer",
+        "Sailor",
+        "Scavenger",
+        "Schemer",
+        "Scholar",
+        "Scholar of the Ancients",
+        "Scion",
+        "Scout",
+        "Secular Medic",
+        "Shadow Haunted",
+        "Slayer",
+        "Smuggler",
+        "Storm Survivor",
+        "Street Urchin",
+        "Survivor",
+        "Tinker",
+        "Trade Consortium Underling",
+        "Traveler",
+        "Undersea Enthusiast",
+        "Unifier",
+        "Wanderer",
+        "Warrior",
+        "Wavetouched",
+        "Wildborne",
+        "Winter’s Child",
+        "Witch Wary",
+        "Wonder Taster"
+    ]
