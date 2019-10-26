@@ -1,3 +1,12 @@
+#-----------------------------------------------------------------------------
+# Name:        Assignment 1
+# Purpose:     Design software that is able to assist in creating a character in Pathfinder 2e
+#
+# Author:      767571
+# Created:     Oct-25-19
+# Updated:     Oct-25-19
+#-----------------------------------------------------------------------------
+
 import sys
 
 
@@ -269,3 +278,6 @@ def choose_background():
         "Witch Wary",
         "Wonder Taster"
     ]
+    choice = ""
+    while choice not in options:
+        choice = input("Type in your chosen background (Invalid input will cause another prompt): ")
