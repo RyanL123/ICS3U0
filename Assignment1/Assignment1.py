@@ -11,7 +11,8 @@
 # When creating character object, use official names instead of user inputs
 
 import sys
-
+import time
+import random
 
 class Character:
     name = ""
@@ -57,7 +58,7 @@ def init():
     while user_choice != 'Y' and user_choice != 'N':
         user_choice = input("(Y) Start | (N) Exit\n").upper()
         if user_choice == 'N':
-            sys.exit(0)
+            sys.exit()
 
 
 # Returns the character's chosen name, age and height
@@ -319,6 +320,8 @@ def choose_background():
         "Wonder Taster"
     ]
     print("<<<Choose your background>>>")
+    print("Due to the amount of backgrounds, it is not feasible to print out all of them. Please refer to the "
+          "rule book")
     # Prompts the user until they enter a valid background
     # Input must be spelt correctly, but spaces and capitalization do not matter.
     choice = ""
@@ -356,18 +359,54 @@ def choose_class():
     return choice
 
 
-def create_repeat():
-    print("Do you want to create another character?")
+# Prints the name of every character
+def view_characters():
+    if len(characters) == 0:
+        print("You haven't created anything yet!")
+        return
+    for i in range(len(characters)):
+        print("%i) %s" % (i+1, characters[i].name))
+
+
+# Displays menu
+def menu():
     choice = ""
-    while choice.upper() != 'Y' and choice.upper() != 'N':
-        choice = input("(Y) Create another character | (N) Exit\n")
-    if choice.upper() == 'Y':
-        return True
-    return False
+    while choice != '1' and choice != '2' and choice != '3':
+        choice = input("(1) Create new character | (2) View created characters | (3) Exit program: ")
+    if choice == "3":
+        sys.exit()
+    elif choice == "2":
+        view_characters()
+        menu()
+
+
+def progress_bar():
+    print("(█) 10%")
+    time.sleep(random.randint(1, 10) / 10)
+    print("Enumerating objects")
+    time.sleep(random.randint(1, 10) / 10)
+    print("Counting objects")
+    time.sleep(random.randint(1, 10)/10)
+    print("(████) 40%")
+    time.sleep(random.randint(1, 10) / 10)
+    print("Delta compression")
+    time.sleep(random.randint(1, 10) / 10)
+    print("(███████) 70%")
+    time.sleep(random.randint(1, 10) / 10)
+    print("Compressing objects")
+    time.sleep(random.randint(1, 10) / 10)
+    print("(█████████) 90%")
+    time.sleep(random.randint(1, 10) / 10)
+    print("Writing objects")
+    time.sleep(random.randint(1, 10) / 10)
+    print("Resolving deltas")
+    time.sleep(random.randint(1, 10) / 10)
+    print("(██████████) 100%")
+    time.sleep(random.randint(1, 10) / 10)
+    print("\nCharacter creation complete!")
 
 
 # Global variables initialization
-repeat = True
 characters = []
 global_stats = {
         "Str": 0,
@@ -378,24 +417,26 @@ global_stats = {
         "Cha": 0
     }
 
+# Main driver code
 init()
-while repeat:
+while True:
+    menu()
     base_characteristics = choose_characteristics()
     local_name = base_characteristics[0]
     local_age = base_characteristics[1]
     local_height = base_characteristics[2]
     local_level = 0
-    print("\n")
+    print("")
     local_ancestry = choose_ancestry()
-    print("\n")
+    print("")
     local_heritage = choose_heritage(local_ancestry)
-    print("\n")
+    print("")
     local_ancestry_feat = ""
-    print("\n")
+    print("")
     local_background = choose_background()
-    print("\n")
+    print("")
     local_character_class = choose_class()
-    print("\n")
+    print("")
     local_backpack = []
     characters.append(Character(local_name,
                                 local_age,
@@ -408,5 +449,7 @@ while repeat:
                                 local_character_class,
                                 local_backpack,
                                 global_stats))
-    repeat = create_repeat()
+    progress_bar()
+    # Sort characters by name lexicographically
+    characters.sort(key=lambda x: x.name)
 
