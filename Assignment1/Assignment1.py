@@ -4,15 +4,14 @@
 #
 # Author:      767571
 # Created:     Oct-25-19
-# Updated:     Oct-25-19
+# Updated:     Oct-28-19
 #-----------------------------------------------------------------------------
 
 # TODO
-# When creating character object, use official names instead of user inputs
 
 import sys
 import time
-import random
+
 
 class Character:
     name = ""
@@ -25,14 +24,7 @@ class Character:
     background = ""
     character_class = ""
     backpack = []
-    stats = {
-        "Str": 0,
-        "Dex": 0,
-        "Con": 0,
-        "Int": 0,
-        "Wis": 0,
-        "Cha": 0
-    }
+    stats = {}
 
     # constructor
     def __init__(self, name, age, height, level, ancestry, heritage, ancestry_feat, background, character_class, backpack, stats):
@@ -85,7 +77,7 @@ def choose_characteristics():
 
 
 # Returns the user's chosen ancestry
-def choose_ancestry():
+def choose_ancestry(stats):
     ancestries = [
         "Dwarf",
         "Elf",
@@ -101,12 +93,58 @@ def choose_ancestry():
     for i in range(len(ancestries)):
         print("%i) %s" % (i+1, ancestries[i]))
 
-    # Repeatedly prompt the user until they enter a valid ancestry.
-    # Input must be spelt correctly, but spaces and capitalization do not matter.
-    choice = ""
-    while choice.replace(" ", "").upper() not in ancestries_match_user_input:
-        choice = input("Type in your chosen ancestry (Invalid input will cause another prompt): ")
-    return choice.replace(" ", "").upper()
+    # Repeatedly prompt the user until they enter an integer within the range of options
+    choice = -1
+    while not(1 <= choice <= 6):
+        try:
+            choice = int(input("Type in your chosen ancestry: "))
+            if not(1 <= choice <= 6):
+                print("Please input an integer between 1 - 6")
+                continue
+            break
+        except:
+            print("Please input an integer between 1 - 6")
+    # Modify stats based on ancestry
+    boost_options = [
+        "Str",
+        "Dex",
+        "Con",
+        "Int",
+        "Wis",
+        "Cha"
+    ]
+    for i in range(len(boost_options)):
+        print("%i) %s" % (i + 1, boost_options[i]))
+    if choice == 1:
+        stats["Con"] += 2
+        stats["Wis"] += 2
+        stats["Cha"] -= 2
+        # Lets the user pick 1 free ability boost
+        free_boost(stats, boost_options)
+    elif choice == 2:
+        stats["Dex"] += 2
+        stats["Int"] += 2
+        stats["Con"] -= 2
+        free_boost(stats, boost_options)
+    elif choice == 3:
+        stats["Con"] += 2
+        stats["Cha"] += 2
+        stats["Str"] -= 2
+        free_boost(stats, boost_options)
+    elif choice == 4:
+        stats["Dex"] += 2
+        stats["Wis"] += 2
+        stats["Str"] -= 2
+        free_boost(stats, boost_options)
+    elif choice == 5:
+        stats["Dex"] += 2
+        stats["Wis"] += 2
+        stats["Str"] -= 2
+        free_boost(stats, boost_options)
+    else:
+        free_boost(stats, boost_options)
+        free_boost(stats, boost_options)
+    return ancestries[choice-1]
 
 
 # Returns the user's chosen heritage
@@ -162,55 +200,96 @@ def choose_heritage(ancestry):
     print("<<<Choose your heritage>>>")
 
     # Displays the appropriate heritage for the given ancestry
-    # Repeatedly prompt the user until they enter a valid heritage.
-    # Input must be spelt correctly, but spaces and capitalization do not matter.
-    if ancestry == "DWARF":
+    # Repeatedly prompt the user until they an integer within the range of options
+    if ancestry == "Dwarf":
         for i in range(len(dwarf)):
             print("%i) %s" % (i+1, dwarf[i]))
-        choice = ""
-        while choice.replace(" ", "").upper() not in [i.replace(" ", "").upper() for i in dwarf]:
-            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
-        return choice.replace(" ", "").upper()
+        choice = -1
+        while not (1 <= choice <= 8):
+            try:
+                choice = int(input("Type in your chosen ancestry: "))
+                if not (1 <= choice <= 8):
+                    print("Please input an integer between 1 - 8")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 8")
+        return dwarf[choice - 1]
 
-    elif ancestry == "ELF":
+    elif ancestry == "Elf":
         for i in range(len(elf)):
             print("%i) %s" % (i+1, elf[i]))
-        choice = ""
-        while choice.replace(" ", "").upper() not in [i.replace(" ", "").upper() for i in elf]:
-            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
-        return choice.replace(" ", "").upper()
+        choice = -1
+        while not (1 <= choice <= 7):
+            try:
+                choice = int(input("Type in your chosen ancestry: "))
+                if not (1 <= choice <= 7):
+                    print("Please input an integer between 1 - 7")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 7")
+        return elf[choice - 1]
 
-    elif ancestry == "GNOME":
+    elif ancestry == "Gnome":
         for i in range(len(gnome)):
             print("%i) %s" % (i+1, gnome[i]))
-        choice = ""
-        while choice.replace(" ", "").upper() not in [i.replace(" ", "").upper() for i in gnome]:
-            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
-        return choice.replace(" ", "").upper()
+        choice = -1
+        while not (1 <= choice <= 6):
+            try:
+                choice = int(input("Type in your chosen ancestry: "))
+                if not (1 <= choice <= 6):
+                    print("Please input an integer between 1 - 6")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 6")
+        return gnome[choice - 1]
 
-    elif ancestry == "GOBLIN":
+    elif ancestry == "Goblin":
         for i in range(len(goblin)):
             print("%i) %s" % (i+1, goblin[i]))
-        choice = ""
-        while choice.replace(" ", "").upper() not in [i.replace(" ", "").upper() for i in goblin]:
-            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
-        return choice.replace(" ", "").upper()
+        choice = -1
+        while not (1 <= choice <= 7):
+            try:
+                choice = int(input("Type in your chosen ancestry: "))
+                if not (1 <= choice <= 7):
+                    print("Please input an integer between 1 - 7")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 7")
+        return goblin[choice - 1]
 
-    elif ancestry == "HALFLING":
+    elif ancestry == "Halfling":
         for i in range(len(halfling)):
             print("%i) %s" % (i+1, halfling[i]))
-        choice = ""
-        while choice.replace(" ", "").upper() not in [i.replace(" ", "").upper() for i in halfling]:
-            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
-        return choice.replace(" ", "").upper()
+        choice = -1
+        while not (1 <= choice <= 5):
+            try:
+                choice = int(input("Type in your chosen ancestry: "))
+                if not (1 <= choice <= 5):
+                    print("Please input an integer between 1 - 5")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 5")
+        return halfling[choice - 1]
 
-    elif ancestry == "HUMAN":
+    elif ancestry == "Human":
         for i in range(len(human)):
             print("%i) %s" % (i+1, human[i]))
-        choice = ""
-        while choice.replace(" ", "").upper() not in [i.replace(" ", "").upper() for i in human]:
-            choice = input("Type in your chosen heritage (Invalid input will cause another prompt): ")
-        return choice.replace(" ", "").upper()
+        choice = -1
+        while not (1 <= choice <= 3):
+            try:
+                choice = int(input("Type in your chosen ancestry: "))
+                if not (1 <= choice <= 3):
+                    print("Please input an integer between 1 - 3")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 3")
+        return human[choice - 1]
 
 
 # Returns the user's chosen background
@@ -324,10 +403,18 @@ def choose_background():
           "rule book")
     # Prompts the user until they enter a valid background
     # Input must be spelt correctly, but spaces and capitalization do not matter.
+    uppercase_list = [i.replace(" ", "").upper() for i in backgrounds]
     choice = ""
-    while choice.replace(" ", "").upper() not in [i.replace(" ", "").upper() for i in backgrounds]:
+    while choice.replace(" ", "").upper() not in uppercase_list:
         choice = input("Type in your chosen background (Invalid input will cause another prompt): ")
-    return choice
+
+    # Locates the index of the background the user gave, and return the properly formatted text
+    index = -1
+    for i in range(len(uppercase_list)):
+        if uppercase_list[i] == choice.replace(" ", "").upper():
+            index = i
+            break
+    return backgrounds[index]
 
 
 def choose_class():
@@ -353,14 +440,37 @@ def choose_class():
 
     # Prompts the user until they enter a valid class
     # Input must be spelt correctly, but spaces and capitalization do not matter.
-    choice = ""
-    while choice.replace(" ", "").upper() not in [i.upper() for i in classes]:
-        choice = input("Type in your chosen class: ")
-    return choice
+    choice = -1
+    while not (1 <= choice <= 12):
+        try:
+            choice = int(input("Type in your chosen ancestry: "))
+            if not (1 <= choice <= 12):
+                print("Please input an integer between 1 - 12")
+                continue
+            break
+        except:
+            print("Please input an integer between 1 - 12")
+    return classes[choice - 1]
+
+
+# Utility function to let the user choose free ability boosts
+def free_boost(stats, boost_options):
+    # Lets the user pick 1 free ability boost
+    user_boost_choice = -1
+    while not (1 <= user_boost_choice <= 6):
+        try:
+            user_boost_choice = int(input("Type in your chosen free ability boost: "))
+            if not (1 <= user_boost_choice <= 6):
+                print("Please input an integer between 1 - 6")
+                continue
+            break
+        except:
+            print("Please input a integer between 1 - 6")
+    stats[boost_options[user_boost_choice-1]] += 2
 
 
 # Prints the name of every character
-def view_characters():
+def view_characters(characters):
     if len(characters) == 0:
         print("You haven't created anything yet!")
         return
@@ -368,88 +478,117 @@ def view_characters():
         print("%i) %s" % (i+1, characters[i].name))
 
 
+# Gets detailed statistics for the given character
+def character_details(characters):
+    character_name = input("Please input the name of the character (Must be exact same): ")
+    for i in range(len(characters)):
+        if characters[i].name.upper() == character_name.upper():
+            print("Name: %s" % characters[i].name)
+            print("Age: %i" % characters[i].age)
+            print("Height: %i" % characters[i].height)
+            print("Ancestry: %s" % characters[i].ancestry)
+            print("Heritage: %s" % characters[i].heritage)
+            print("Ancestry Feat: %s" % characters[i].ancestry_feat)
+            print("Background: %s" % characters[i].background)
+            print("Class: %s" % characters[i].character_class)
+            print("Str: %i" % characters[i].stats["Str"])
+            print("Dex: %i" % characters[i].stats["Dex"])
+            print("Con: %i" % characters[i].stats["Con"])
+            print("Int: %i" % characters[i].stats["Int"])
+            print("Wis: %i" % characters[i].stats["Wis"])
+            print("Cha: %i" % characters[i].stats["Cha"])
+            return
+    print("A character with that name does not exist")
+
+
 # Displays menu
-def menu():
+def menu(characters):
     choice = ""
-    while choice != '1' and choice != '2' and choice != '3':
-        choice = input("(1) Create new character | (2) View created characters | (3) Exit program: ")
-    if choice == "3":
+    while choice != '1' and choice != '2' and choice != '3' and choice != '4':
+        choice = input("(1) Create new character | (2) View created characters | (3) View Character Details | "
+                       "(4) Exit Program: ")
+    if choice == "4":
         sys.exit()
+    elif choice == "3":
+        character_details(characters)
+        menu(characters)
     elif choice == "2":
-        view_characters()
-        menu()
+        view_characters(characters)
+        menu(characters)
 
 
+# Cool progress bar to make the user think the code actually does something
 def progress_bar():
     print("(█) 10%")
-    time.sleep(random.randint(1, 10) / 10)
+    time.sleep(1/10)
     print("Enumerating objects")
-    time.sleep(random.randint(1, 10) / 10)
+    time.sleep(1/10)
     print("Counting objects")
-    time.sleep(random.randint(1, 10)/10)
+    time.sleep(1/10)
     print("(████) 40%")
-    time.sleep(random.randint(1, 10) / 10)
+    time.sleep(1/10)
     print("Delta compression")
-    time.sleep(random.randint(1, 10) / 10)
+    time.sleep(1/10)
     print("(███████) 70%")
-    time.sleep(random.randint(1, 10) / 10)
+    time.sleep(1/10)
     print("Compressing objects")
-    time.sleep(random.randint(1, 10) / 10)
+    time.sleep(1/10)
     print("(█████████) 90%")
-    time.sleep(random.randint(1, 10) / 10)
+    time.sleep(1/10)
     print("Writing objects")
-    time.sleep(random.randint(1, 10) / 10)
+    time.sleep(1/10)
     print("Resolving deltas")
-    time.sleep(random.randint(1, 10) / 10)
+    time.sleep(1/10)
     print("(██████████) 100%")
-    time.sleep(random.randint(1, 10) / 10)
+    time.sleep(1/10)
     print("\nCharacter creation complete!")
 
 
-# Global variables initialization
-characters = []
-global_stats = {
-        "Str": 0,
-        "Dex": 0,
-        "Con": 0,
-        "Int": 0,
-        "Wis": 0,
-        "Cha": 0
-    }
-
 # Main driver code
-init()
-while True:
-    menu()
-    base_characteristics = choose_characteristics()
-    local_name = base_characteristics[0]
-    local_age = base_characteristics[1]
-    local_height = base_characteristics[2]
-    local_level = 0
-    print("")
-    local_ancestry = choose_ancestry()
-    print("")
-    local_heritage = choose_heritage(local_ancestry)
-    print("")
-    local_ancestry_feat = ""
-    print("")
-    local_background = choose_background()
-    print("")
-    local_character_class = choose_class()
-    print("")
-    local_backpack = []
-    characters.append(Character(local_name,
-                                local_age,
-                                local_height,
-                                0,
-                                local_ancestry,
-                                local_heritage,
-                                local_ancestry_feat,
-                                local_background,
-                                local_character_class,
-                                local_backpack,
-                                global_stats))
-    progress_bar()
-    # Sort characters by name lexicographically
-    characters.sort(key=lambda x: x.name)
+def main():
+    # Avoids the use of global variables
+    characters = []
+    global_stats = {
+        "Str": 10,
+        "Dex": 10,
+        "Con": 10,
+        "Int": 10,
+        "Wis": 10,
+        "Cha": 10
+    }
+    init()
+    while True:
+        menu(characters)
+        base_characteristics = choose_characteristics()
+        local_name = base_characteristics[0]
+        local_age = base_characteristics[1]
+        local_height = base_characteristics[2]
+        print("")
+        local_ancestry = choose_ancestry(global_stats)
+        print("")
+        local_heritage = choose_heritage(local_ancestry)
+        print("")
+        local_ancestry_feat = ""
+        print("")
+        local_background = choose_background()
+        print("")
+        local_character_class = choose_class()
+        print("")
+        local_backpack = []
+        characters.append(Character(local_name,
+                                    local_age,
+                                    local_height,
+                                    1,
+                                    local_ancestry,
+                                    local_heritage,
+                                    local_ancestry_feat,
+                                    local_background,
+                                    local_character_class,
+                                    local_backpack,
+                                    global_stats))
+        progress_bar()
+        # Sort characters by name lexicographically
+        characters.sort(key=lambda x: x.name)
 
+
+main()
