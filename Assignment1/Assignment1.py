@@ -4,10 +4,12 @@
 #
 # Author:      767571
 # Created:     Oct-25-19
-# Updated:     Oct-28-19
+# Updated:     Oct-29-19
 #-----------------------------------------------------------------------------
 
 # TODO
+# Implement ancestry feat
+# Finish the implementation of the buy_items function
 
 import sys
 import time
@@ -18,31 +20,56 @@ class Character:
     age = 0
     height = 0
     level = 0
+    gold = 0
     ancestry = ""
     heritage = ""
     ancestry_feat = ""
     background = ""
     character_class = ""
+    spells = []
     backpack = []
     stats = {}
 
     # constructor
-    def __init__(self, name, age, height, level, ancestry, heritage, ancestry_feat, background, character_class, backpack, stats):
+    def __init__(self,
+                 name,
+                 age,
+                 height,
+                 level,
+                 gold,
+                 ancestry,
+                 heritage,
+                 ancestry_feat,
+                 background,
+                 character_class,
+                 spells,
+                 backpack,
+                 stats):
         self.name = name
         self.age = age
         self.height = height
         self.level = level
+        self.gold = gold
         self.ancestry = ancestry
         self.heritage = heritage
         self.ancestry_feat = ancestry_feat
         self.background = background
         self.character_class = character_class
+        self.spells = spells
         self.backpack = backpack
         self.stats = stats
 
 
-# Debriefs the user on the uses of the program
 def init():
+    """
+    Basic instructions on how to use the program
+
+    Parameters:
+    None
+
+    Returns:
+    None
+    """
     print("Welcome to Pathfinder 2e Character Builder!\n")
     print("This program will assist you in constructing a character for playing Pathfinder 2e.")
     print("Once finished, you can create another character, or modify your current character as you go.\n")
@@ -53,8 +80,16 @@ def init():
             sys.exit()
 
 
-# Returns the character's chosen name, age and height
 def choose_characteristics():
+    """
+    Gets basic information on the character
+
+    Parameters:
+    None
+
+    Returns:
+    None
+    """
     age = 0
     height = 0
     name = input("Input the desired name for your character: ")
@@ -63,21 +98,37 @@ def choose_characteristics():
     while True:
         try:
             age = int(input("Input the desired age for your character: "))
+            if not age > 0:
+                print("Please input a positive integer")
+                continue
             break
         except:
-            print("Please input an integer")
+            print("Please input a positive integer")
     while True:
         try:
             height = int(input("Input the desired height for your character (in cm): "))
+            if not height > 0:
+                print("Please input a positive integer")
+                continue
             break
         except:
-            print("Please input an integer")
+            print("Please input a positive integer")
 
     return [name, age, height]
 
 
-# Returns the user's chosen ancestry
 def choose_ancestry(stats):
+    """
+    Gets the user's choice of ancestry
+
+    Parameters:
+    stats: dictionary
+        Dictionary containing the character's statistics
+
+    Returns:
+    String
+        The chosen ancestry as an index of the ancestries list
+    """
     ancestries = [
         "Dwarf",
         "Elf",
@@ -86,7 +137,6 @@ def choose_ancestry(stats):
         "Halfling",
         "Human",
     ]
-    ancestries_match_user_input = [i.upper() for i in ancestries]
     print("<<<Choose your ancestry>>>")
 
     # prints to the user all available options
@@ -147,8 +197,18 @@ def choose_ancestry(stats):
     return ancestries[choice-1]
 
 
-# Returns the user's chosen heritage
 def choose_heritage(ancestry):
+    """
+    Gets the user's choice of heritage based on their chosen ancestry
+
+    Parameters:
+    ancestry: String
+        The ancestry of the character object currently being created
+
+    Returns:
+    String
+        The chosen heritage as an index of the appropriate heritage list
+    """
     dwarf = [
         "Ancient-Blooded Dwarf",
         "Anvil Dwarf",
@@ -292,8 +352,17 @@ def choose_heritage(ancestry):
         return human[choice - 1]
 
 
-# Returns the user's chosen background
 def choose_background():
+    """
+    Get the user's choice of background
+
+    Parameters:
+    None
+
+    Returns:
+    String
+        The chosen background as an index of the appropriate backgrounds list
+    """
     backgrounds = [
         "Academic",
         "Acolyte",
@@ -418,6 +487,16 @@ def choose_background():
 
 
 def choose_class():
+    """
+    Gets the user's choice of class
+
+    Parameters:
+    None
+
+    Returns:
+    String
+        The chosen class as an index of the appropriate classes list
+    """
     classes = [
         "Alchemist",
         "Barbarian",
@@ -438,8 +517,7 @@ def choose_class():
     for i in range(len(classes)):
         print("%i) %s" % (i + 1, classes[i]))
 
-    # Prompts the user until they enter a valid class
-    # Input must be spelt correctly, but spaces and capitalization do not matter.
+    # Repeatedly prompt the user until they an integer within the range of options
     choice = -1
     while not (1 <= choice <= 12):
         try:
@@ -453,9 +531,141 @@ def choose_class():
     return classes[choice - 1]
 
 
-# Utility function to let the user choose free ability boosts
+# Return user's chosen spells for eligible classes
+def choose_spells(character_class):
+    """
+    Gets the user's choice of spells
+
+    Parameters:
+    character_class: String
+        The class of the character object currently being created
+
+    Returns:
+    String
+        The chosen spell as an index of the appropriate spells list
+    """
+    spells = [
+        "Acid Splash",
+        "Air Bubble",
+        "Alarm",
+        "Ant Haul",
+        "Bane",
+        "Bless",
+        "Burning Hands",
+        "Charm",
+        "Chill Touch",
+        "Color Spray",
+        "Command",
+        "Create Water",
+        "Dancing Lights",
+        "Daze",
+        "Detect Alignment",
+        "Detect Magic",
+        "Detect Poison",
+        "Disrupt Undead",
+        "Disrupting Weapons",
+        "Divine Lance",
+        "Electric Arc",
+        "Fear",
+        "Feather Fall",
+        "Fleet Step",
+        "Floating Disk",
+        "Forbidding Ward",
+        "Ghost Sound",
+        "Goblin Pox",
+        "Grease",
+        "Grim Tendrils",
+        "Guidance",
+        "Gust of Wind",
+        "Harm",
+        "Heal",
+        "Hydraulic Push",
+        "Illusory Disguise",
+        "Illusory Object",
+        "Item Facade",
+        "Jump",
+        "Know Direction",
+        "Light",
+        "Lock",
+        "Longstrider",
+        "Mage Armor",
+        "Mage Hand",
+        "Magic Aura",
+        "Magic Fang",
+        "Magic Missile",
+        "Magic Weapon",
+        "Mending",
+        "Message",
+        "Mindlink",
+        "Negate Aroma",
+        "Pass Without Trace",
+        "Pest Form",
+        "Phantom Pain",
+        "Prestidigitation",
+        "Produce Flame",
+        "Protection",
+        "Purify Food and Drink",
+        "Ray of Enfeeblement",
+        "Ray of Frost",
+        "Read Aura",
+        "Sanctuary",
+        "Shield",
+        "Shillelagh",
+        "Shocking Grasp",
+        "Sigil",
+        "Sleep",
+        "Soothe",
+        "Spider Sting",
+        "Spirit Link",
+        "Stabilize",
+        "Summon Animal",
+        "Summon Construct",
+        "Summon Fey",
+        "Summon Plant or Fungus",
+        "Tanglefoot",
+        "Telekinetic Projectile",
+        "True Strike",
+        "Unseen Servant",
+        "Ventriloquism"
+    ]
+
+    # These classes cannot choose spells
+    invalid_classes = ["ALCHEMIST", "BARBARIAN", "FIGHTER", "MONK", "RANGER", "ROGUE"]
+    if character_class.upper() in invalid_classes:
+        return
+
+    print("<<<Choose your spells>>>")
+    print("Due to the amount of spells, it is not feasible to print out all of them. Please refer to the "
+          "rule book")
+    # Prompts the user until they enter a valid background
+    # Input must be spelt correctly, but spaces and capitalization do not matter.
+    uppercase_list = [i.replace(" ", "").upper() for i in spells]
+    choice = ""
+    while choice.replace(" ", "").upper() not in uppercase_list:
+        choice = input("Type in your chosen spells (Invalid input will cause another prompt): ")
+
+    # Locates the index of the background the user gave, and return the properly formatted text
+    index = -1
+    for i in range(len(uppercase_list)):
+        if uppercase_list[i] == choice.replace(" ", "").upper():
+            index = i
+            break
+    return [spells[index]]
+
+
 def free_boost(stats, boost_options):
-    # Lets the user pick 1 free ability boost
+    """
+    Utility function to let the user choose free ability boosts
+
+    Parameters:
+    stats: dictionary
+        Dictionary containing the character's statistics
+    boost_options: list
+        List containing all available options for boosting
+
+    Returns:
+    None
+    """
     user_boost_choice = -1
     while not (1 <= user_boost_choice <= 6):
         try:
@@ -469,8 +679,21 @@ def free_boost(stats, boost_options):
     stats[boost_options[user_boost_choice-1]] += 2
 
 
-# Prints the name of every character
+# def buy_items(character):
+
+
+# View all created characters
 def view_characters(characters):
+    """
+    Displays every created character by their name
+
+    Parameters:
+    characters: list
+        List of characters being iterated through for collecting data
+
+    Returns:
+    None
+    """
     if len(characters) == 0:
         print("You haven't created anything yet!")
         return
@@ -478,31 +701,53 @@ def view_characters(characters):
         print("%i) %s" % (i+1, characters[i].name))
 
 
-# Gets detailed statistics for the given character
-def character_details(characters):
+def character_details(character):
+    """
+    Gets detailed statistics for the given character
+
+    Parameters:
+    character: list
+        List of characters being iterated through for collecting data
+
+    Returns:
+    None
+    """
     character_name = input("Please input the name of the character (Must be exact same): ")
-    for i in range(len(characters)):
-        if characters[i].name.upper() == character_name.upper():
-            print("Name: %s" % characters[i].name)
-            print("Age: %i" % characters[i].age)
-            print("Height: %i" % characters[i].height)
-            print("Ancestry: %s" % characters[i].ancestry)
-            print("Heritage: %s" % characters[i].heritage)
-            print("Ancestry Feat: %s" % characters[i].ancestry_feat)
-            print("Background: %s" % characters[i].background)
-            print("Class: %s" % characters[i].character_class)
-            print("Str: %i" % characters[i].stats["Str"])
-            print("Dex: %i" % characters[i].stats["Dex"])
-            print("Con: %i" % characters[i].stats["Con"])
-            print("Int: %i" % characters[i].stats["Int"])
-            print("Wis: %i" % characters[i].stats["Wis"])
-            print("Cha: %i" % characters[i].stats["Cha"])
+    for i in range(len(character)):
+        if character[i].name.upper() == character_name.upper():
+            print("Name: %s" % character[i].name)
+            print("Age: %i" % character[i].age)
+            print("Height: %i" % character[i].height)
+            print("Ancestry: %s" % character[i].ancestry)
+            print("Heritage: %s" % character[i].heritage)
+            print("Ancestry Feat: %s" % character[i].ancestry_feat)
+            print("Background: %s" % character[i].background)
+            print("Class: %s" % character[i].character_class)
+            if character[i].spells is None:
+                print("Spells: None")
+            else:
+                print("Spells: %s" % " ".join(character[i].spells))
+            print("Str: %i" % character[i].stats["Str"])
+            print("Dex: %i" % character[i].stats["Dex"])
+            print("Con: %i" % character[i].stats["Con"])
+            print("Int: %i" % character[i].stats["Int"])
+            print("Wis: %i" % character[i].stats["Wis"])
+            print("Cha: %i" % character[i].stats["Cha"])
             return
     print("A character with that name does not exist")
 
 
-# Displays menu
 def menu(characters):
+    """
+    Displays menu
+
+    Parameters:
+    character: list
+        List of characters being iterated through for collecting data
+
+    Returns:
+    None
+    """
     choice = ""
     while choice != '1' and choice != '2' and choice != '3' and choice != '4':
         choice = input("(1) Create new character | (2) View created characters | (3) View Character Details | "
@@ -517,8 +762,16 @@ def menu(characters):
         menu(characters)
 
 
-# Cool progress bar to make the user think the code actually does something
 def progress_bar():
+    """
+    Cool progress bar to make the user think the code actually does something
+
+    Parameters:
+    Absolutely nothing
+
+    Returns:
+    Why would this return something lol
+    """
     print("(█) 10%")
     time.sleep(1/10)
     print("Enumerating objects")
@@ -574,16 +827,20 @@ def main():
         print("")
         local_character_class = choose_class()
         print("")
+        local_character_spells = choose_spells(local_character_class)
+        print("")
         local_backpack = []
         characters.append(Character(local_name,
                                     local_age,
                                     local_height,
                                     1,
+                                    15,
                                     local_ancestry,
                                     local_heritage,
                                     local_ancestry_feat,
                                     local_background,
                                     local_character_class,
+                                    local_character_spells,
                                     local_backpack,
                                     global_stats))
         progress_bar()
