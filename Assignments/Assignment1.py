@@ -1,15 +1,18 @@
 #-----------------------------------------------------------------------------
-# Name:        Assignment 1
+# Name:        Assignments 1
 # Purpose:     Design software that is able to assist in creating a character in Pathfinder 2e
 #
 # Author:      767571
 # Created:     Oct-25-19
-# Updated:     Oct-29-19
+# Updated:     Oct-30-19
 #-----------------------------------------------------------------------------
+
+# Apologies in advance to anyone trying to understand this spaghetti code
 
 # TODO
 # Implement ancestry feat
-# Finish the implementation of the buy_items function
+# Refactor comments spacing
+# Change init description (remove modifying ability)
 
 import sys
 import time
@@ -156,12 +159,12 @@ def choose_ancestry(stats):
             print("Please input an integer between 1 - 6")
     # Modify stats based on ancestry
     boost_options = [
-        "Str",
-        "Dex",
-        "Con",
-        "Int",
-        "Wis",
-        "Cha"
+        "Strength",
+        "Dexterity",
+        "Constitution",
+        "Intelligence",
+        "Wisdom",
+        "Charisma"
     ]
     for i in range(len(boost_options)):
         print("%i) %s" % (i + 1, boost_options[i]))
@@ -676,13 +679,71 @@ def free_boost(stats, boost_options):
             break
         except:
             print("Please input a integer between 1 - 6")
-    stats[boost_options[user_boost_choice-1]] += 2
+    stats[boost_options[user_boost_choice-1][0:3]] += 2
 
 
-# def buy_items(character):
+def buy_items(money):
+    """
+    Utility function to let the user buy items
+
+    Parameters:
+    money: int
+        Amount of money user has
+
+    Returns:
+    List:
+        list of items the player bought
+    """
+    items_name_with_cost = {
+        "Jellyfish Lamp": 2,
+        "Pesh": 1,
+        "Swim Fins": 5,
+        "Archaic Wayfinder": 30,
+        "Black Pearl Aeon Stone": 2000,
+        "Blessed Tattoo": 90,
+        "Final Blade": 40,
+    }
+    items_name = [
+        "Jellyfish Lamp",
+        "Pesh",
+        "Swim Fins",
+        "Archaic Wayfinder",
+        "Black Pearl Aeon Stone",
+        "Blessed Tattoo",
+        "Final Blade",
+    ]
+    cart = []
+    remaining_money = money
+
+    # prints to the user all available options
+    print("<<<Buy items>>>")
+    for i in range(len(items_name)):
+        print("%i) %s: %i" % (i + 1, items_name[i], items_name_with_cost[items_name[i]]))
+
+    # Repeatedly prompt the user until they an integer within the range of options
+    choice = -1
+    while not (1 <= choice <= 7):
+        try:
+            choice = int(input("Type in the item you would like to purchase (0 to exit): "))
+            if choice == 0:
+                break
+            elif not (1 <= choice <= 7):
+                print("Please input an integer between 1 - 7")
+                continue
+            elif items_name_with_cost[items_name[choice-1]] > remaining_money:
+                print("You don't have enough money for that item!")
+                choice = -1  # Resets choice for loop to keep running
+                continue
+            remaining_money -= items_name_with_cost[items_name[choice-1]]  # Deduct money
+            print("Purchased %s x1. Remaining money (in gp): %i" % (items_name[choice-1], remaining_money))
+            cart.append(items_name[choice])  # Add item to cart
+            choice = -1  # Resets choice for loop to keep running
+        except:
+            print("Please input an integer between 1 - 7")
+
+    return [cart, remaining_money]
 
 
-# View all created characters
 def view_characters(characters):
     """
     Displays every created character by their name
@@ -718,6 +779,8 @@ def character_details(character):
             print("Name: %s" % character[i].name)
             print("Age: %i" % character[i].age)
             print("Height: %i" % character[i].height)
+            print("Level: %i" % character[i].level)
+            print("Gold: %i" % character[i].gold)
             print("Ancestry: %s" % character[i].ancestry)
             print("Heritage: %s" % character[i].heritage)
             print("Ancestry Feat: %s" % character[i].ancestry_feat)
@@ -733,6 +796,10 @@ def character_details(character):
             print("Int: %i" % character[i].stats["Int"])
             print("Wis: %i" % character[i].stats["Wis"])
             print("Cha: %i" % character[i].stats["Cha"])
+            if character[i].backpack is None:
+                print("Items: None")
+            else:
+                print("Items: %s" % " ".join(character[i].backpack))
             return
     print("A character with that name does not exist")
 
@@ -801,7 +868,7 @@ def progress_bar():
 def main():
     # Avoids the use of global variables
     characters = []
-    global_stats = {
+    default_stats = {
         "Str": 10,
         "Dex": 10,
         "Con": 10,
@@ -817,7 +884,7 @@ def main():
         local_age = base_characteristics[1]
         local_height = base_characteristics[2]
         print("")
-        local_ancestry = choose_ancestry(global_stats)
+        local_ancestry = choose_ancestry(default_stats)
         print("")
         local_heritage = choose_heritage(local_ancestry)
         print("")
@@ -829,12 +896,14 @@ def main():
         print("")
         local_character_spells = choose_spells(local_character_class)
         print("")
-        local_backpack = []
+        backpack_money_tuple = buy_items(15)
+        local_backpack = backpack_money_tuple[0]
+        local_money = backpack_money_tuple[1]
         characters.append(Character(local_name,
                                     local_age,
                                     local_height,
                                     1,
-                                    15,
+                                    local_money,
                                     local_ancestry,
                                     local_heritage,
                                     local_ancestry_feat,
@@ -842,7 +911,7 @@ def main():
                                     local_character_class,
                                     local_character_spells,
                                     local_backpack,
-                                    global_stats))
+                                    default_stats))
         progress_bar()
         # Sort characters by name lexicographically
         characters.sort(key=lambda x: x.name)
