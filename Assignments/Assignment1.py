@@ -4,15 +4,10 @@
 #
 # Author:      767571
 # Created:     Oct-25-19
-# Updated:     Oct-30-19
+# Updated:     Oct-31-19
 #-----------------------------------------------------------------------------
 
 # Apologies in advance to anyone trying to understand this spaghetti code
-
-# TODO
-# Implement ancestry feat
-# Refactor comments spacing
-# Change init description (remove modifying ability)
 
 import sys
 import time
@@ -75,7 +70,7 @@ def init():
     """
     print("Welcome to Pathfinder 2e Character Builder!\n")
     print("This program will assist you in constructing a character for playing Pathfinder 2e.")
-    print("Once finished, you can create another character, or modify your current character as you go.\n")
+    print("Once finished, you can create another character, or view existing characters.\n")
     user_choice = ""
     while user_choice != 'Y' and user_choice != 'N':
         user_choice = input("(Y) Start | (N) Exit\n").upper()
@@ -355,6 +350,205 @@ def choose_heritage(ancestry):
         return human[choice - 1]
 
 
+def choose_ancestry_feat(ancestry):
+    """
+    Get the user's choice of ancestry feat
+
+    Parameters:
+    ancestry: String
+        The ancestry of the character object currently being created
+
+    Returns:
+    String
+        The chosen heritage as an index of the appropriate heritage list
+    """
+    dwarf = [
+        "Avenge In Glory",
+        "Clan’s Edge",
+        "Dwarven Lore",
+        "Dwarven Weapon Familiarity",
+        "Forge-Day’s Rest",
+        "Rock Runner",
+        "Stonecunning",
+        "Surface Culture",
+        "Unburdened Iron",
+        "Vengeful Hatred"
+    ]
+    elf = [
+        "Ancestral Longevity",
+        "Elemental WrathFeat",
+        "Elven Lore",
+        "Elven Verve",
+        "Elven Weapon Familiarity",
+        "Forlorn",
+        "Nimble Elf",
+        "Share Thoughts",
+        "Otherworldly Magic",
+        "Unwavering Mien",
+        "Wildborn Magic",
+        "Woodcraft"
+    ]
+    gnome = [
+        "Animal Accomplice",
+        "Burrow Elocutionist",
+        "Fey Fellowship",
+        "Fey World Magic",
+        "Gnome Obsession",
+        "Gnome Polyglot",
+        "Gnome Weapon Familiarity",
+        "Grim Insight",
+        "Illusion Sense",
+        "Inventive Offensive",
+        "Life-Giving Magic",
+        "Natural Performer",
+        "Theoretical Acumen",
+        "Unexpected Shift",
+        "Vibrant Display",
+
+    ]
+    goblin = [
+        "Bouncy Goblin",
+        "Burn It!",
+        "City Scavenger",
+        "Fang Sharpener",
+        "Goblin Lore",
+        "Goblin Scuttle",
+        "Goblin Song",
+        "Goblin Weapon Familiarity",
+        "Hard Tail",
+        "Junk Tinker",
+        "Rough Rider",
+        "Very Sneaky"
+    ]
+    halfling = [
+        "Adroit Manipulation",
+        "Distracting Shadows",
+        "Halfling Lore",
+        "Halfling Luck",
+        "Halfling Weapon Familiarity",
+        "Innocuous",
+        "Intuitive Cooperation",
+        "Sure Feet",
+        "Titan Slinger",
+        "Unassuming Dedication",
+        "Unfettered Halfling",
+        "Watchful Halfling"
+    ]
+    human = [
+        "Adapted Cantrip",
+        "Arcane Tattoos",
+        "Astrology",
+        "Construct Summoner",
+        "Cooperative Nature",
+        "Courteous Comeback",
+        "Devil’s Advocate",
+        "Dragon Spit",
+        "General Training",
+        "Gloomseer",
+        "Haughty Obstinacy",
+        "Keep Up Appearances",
+        "Know Oneself",
+        "Natural Ambition",
+        "Natural Skill",
+        "Spirit Bond",
+        "Unconventional Weaponry",
+        "Viking Shieldbearer",
+        "Witch Warden"
+    ]
+    print("<<<Choose your ancestry feat>>>")
+
+    # Displays the appropriate heritage for the given ancestry
+    # Repeatedly prompt the user until they an integer within the range of options
+    if ancestry == "Dwarf":
+        for i in range(len(dwarf)):
+            print("%i) %s" % (i + 1, dwarf[i]))
+        choice = -1
+        while not (1 <= choice <= 10):
+            try:
+                choice = int(input("Type in your chosen ancestry feat: "))
+                if not (1 <= choice <= 10):
+                    print("Please input an integer between 1 - 10")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 10")
+        return dwarf[choice - 1]
+
+    elif ancestry == "Elf":
+        for i in range(len(elf)):
+            print("%i) %s" % (i + 1, elf[i]))
+        choice = -1
+        while not (1 <= choice <= 12):
+            try:
+                choice = int(input("Type in your chosen ancestry feat: "))
+                if not (1 <= choice <= 12):
+                    print("Please input an integer between 1 - 12")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 12")
+        return elf[choice - 1]
+
+    elif ancestry == "Gnome":
+        for i in range(len(gnome)):
+            print("%i) %s" % (i + 1, gnome[i]))
+        choice = -1
+        while not (1 <= choice <= 15):
+            try:
+                choice = int(input("Type in your chosen ancestry feat: "))
+                if not (1 <= choice <= 15):
+                    print("Please input an integer between 1 - 15")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 15")
+        return gnome[choice - 1]
+
+    elif ancestry == "Goblin":
+        for i in range(len(goblin)):
+            print("%i) %s" % (i + 1, goblin[i]))
+        choice = -1
+        while not (1 <= choice <= 12):
+            try:
+                choice = int(input("Type in your chosen ancestry feat: "))
+                if not (1 <= choice <= 12):
+                    print("Please input an integer between 1 - 12")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 12")
+        return goblin[choice - 1]
+
+    elif ancestry == "Halfling":
+        for i in range(len(halfling)):
+            print("%i) %s" % (i + 1, halfling[i]))
+        choice = -1
+        while not (1 <= choice <= 12):
+            try:
+                choice = int(input("Type in your chosen ancestry feat: "))
+                if not (1 <= choice <= 12):
+                    print("Please input an integer between 1 - 12")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 12")
+        return halfling[choice - 1]
+
+    elif ancestry == "Human":
+        for i in range(len(human)):
+            print("%i) %s" % (i + 1, human[i]))
+        choice = -1
+        while not (1 <= choice <= 19):
+            try:
+                choice = int(input("Type in your chosen ancestry feat: "))
+                if not (1 <= choice <= 19):
+                    print("Please input an integer between 1 - 19")
+                    continue
+                break
+            except:
+                print("Please input an integer between 1 - 19")
+        return human[choice - 1]
+
 def choose_background():
     """
     Get the user's choice of background
@@ -534,7 +728,6 @@ def choose_class():
     return classes[choice - 1]
 
 
-# Return user's chosen spells for eligible classes
 def choose_spells(character_class):
     """
     Gets the user's choice of spells
@@ -789,7 +982,7 @@ def character_details(character):
             if character[i].spells is None:
                 print("Spells: None")
             else:
-                print("Spells: %s" % " ".join(character[i].spells))
+                print("Spells: %s" % ", ".join(character[i].spells))
             print("Str: %i" % character[i].stats["Str"])
             print("Dex: %i" % character[i].stats["Dex"])
             print("Con: %i" % character[i].stats["Con"])
@@ -799,7 +992,7 @@ def character_details(character):
             if character[i].backpack is None:
                 print("Items: None")
             else:
-                print("Items: %s" % " ".join(character[i].backpack))
+                print("Items: %s" % ", ".join(character[i].backpack))
             return
     print("A character with that name does not exist")
 
@@ -888,7 +1081,7 @@ def main():
         print("")
         local_heritage = choose_heritage(local_ancestry)
         print("")
-        local_ancestry_feat = ""
+        local_ancestry_feat = choose_ancestry_feat(local_ancestry)
         print("")
         local_background = choose_background()
         print("")
