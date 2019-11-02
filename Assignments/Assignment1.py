@@ -4,7 +4,7 @@
 #
 # Author:      767571
 # Created:     Oct-25-19
-# Updated:     Oct-31-19
+# Updated:     Nov-01-19
 #-----------------------------------------------------------------------------
 
 # Apologies in advance to anyone trying to understand this spaghetti code
@@ -135,7 +135,7 @@ def choose_ancestry(stats):
         "Halfling",
         "Human",
     ]
-    print("<<<Choose your ancestry>>>")
+    print("⮘━━━━━━━Choose your ancestry━━━━━━━⮚")
 
     # prints to the user all available options
     for i in range(len(ancestries)):
@@ -161,6 +161,7 @@ def choose_ancestry(stats):
         "Wisdom",
         "Charisma"
     ]
+    print("\n⮘━━━━━━━Choose stat boost━━━━━━━⮚")
     for i in range(len(boost_options)):
         print("%i) %s" % (i + 1, boost_options[i]))
     if choice == 1:
@@ -255,7 +256,7 @@ def choose_heritage(ancestry):
         "Versatile Heritage",
         "Wintertouched Heritage"
     ]
-    print("<<<Choose your heritage>>>")
+    print("⮘━━━━━━━Choose your heritage━━━━━━━⮚")
 
     # Displays the appropriate heritage for the given ancestry
     # Repeatedly prompt the user until they an integer within the range of options
@@ -455,7 +456,7 @@ def choose_ancestry_feat(ancestry):
         "Viking Shieldbearer",
         "Witch Warden"
     ]
-    print("<<<Choose your ancestry feat>>>")
+    print("⮘━━━━━━━Choose your ancestry feat━━━━━━━⮚")
 
     # Displays the appropriate heritage for the given ancestry
     # Repeatedly prompt the user until they an integer within the range of options
@@ -548,6 +549,7 @@ def choose_ancestry_feat(ancestry):
             except:
                 print("Please input an integer between 1 - 19")
         return human[choice - 1]
+
 
 def choose_background():
     """
@@ -664,7 +666,7 @@ def choose_background():
         "Witch Wary",
         "Wonder Taster"
     ]
-    print("<<<Choose your background>>>")
+    print("⮘━━━━━━━Choose your background━━━━━━━⮚")
     print("Due to the amount of backgrounds, it is not feasible to print out all of them. Please refer to the "
           "rule book")
     # Prompts the user until they enter a valid background
@@ -708,7 +710,7 @@ def choose_class():
         "Sorcerer",
         "Wizard"
     ]
-    print("<<<Choose your class>>>")
+    print("⮘━━━━━━━Choose your class━━━━━━━⮚")
 
     # prints to the user all available options
     for i in range(len(classes)):
@@ -830,7 +832,7 @@ def choose_spells(character_class):
     if character_class.upper() in invalid_classes:
         return
 
-    print("<<<Choose your spells>>>")
+    print("⮘━━━━━━━Choose your spells━━━━━━━⮚")
     print("Due to the amount of spells, it is not feasible to print out all of them. Please refer to the "
           "rule book")
     # Prompts the user until they enter a valid background
@@ -909,7 +911,7 @@ def buy_items(money):
     remaining_money = money
 
     # prints to the user all available options
-    print("<<<Buy items>>>")
+    print("⮘━━━━━━━Buy items━━━━━━━⮚")
     for i in range(len(items_name)):
         print("%i) %s: %i" % (i + 1, items_name[i], items_name_with_cost[items_name[i]]))
 
