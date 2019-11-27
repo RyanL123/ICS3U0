@@ -1,11 +1,11 @@
-#-----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Name:        Assignments 1
 # Purpose:     Design software that is able to assist in creating a character in Pathfinder 2e
 #
 # Author:      767571
 # Created:     Oct-25-19
-# Updated:     Nov-01-19
-#-----------------------------------------------------------------------------
+# Updated:     Nov-26-19
+# -----------------------------------------------------------------------------
 
 # Apologies in advance to anyone trying to understand this spaghetti code
 
@@ -62,10 +62,14 @@ def init():
     """
     Basic instructions on how to use the program
 
+    Displays a menu to the user. Asks the user if they want to run the program, then continues or exits based on their choice
+
     Parameters:
+    ----------
     None
 
     Returns:
+    ----------
     None
     """
     print("Welcome to Pathfinder 2e Character Builder!\n")
@@ -82,10 +86,14 @@ def choose_characteristics():
     """
     Gets basic information on the character
 
+    Prompts the user for character age, name and height and returns all 3 as a list
+
     Parameters:
+    ----------
     None
 
     Returns:
+    ----------
     None
     """
     age = 0
@@ -119,11 +127,15 @@ def choose_ancestry(stats):
     """
     Gets the user's choice of ancestry
 
+    Prompts the user for their ancestry chosen from a list of 6 options and returns it
+
     Parameters:
+    ----------
     stats: dictionary
         Dictionary containing the character's statistics
 
     Returns:
+    ----------
     String
         The chosen ancestry as an index of the ancestries list
     """
@@ -139,14 +151,14 @@ def choose_ancestry(stats):
 
     # prints to the user all available options
     for i in range(len(ancestries)):
-        print("%i) %s" % (i+1, ancestries[i]))
+        print("%i) %s" % (i + 1, ancestries[i]))
 
     # Repeatedly prompt the user until they enter an integer within the range of options
     choice = -1
-    while not(1 <= choice <= 6):
+    while not (1 <= choice <= 6):
         try:
             choice = int(input("Type in your chosen ancestry: "))
-            if not(1 <= choice <= 6):
+            if not (1 <= choice <= 6):
                 print("Please input an integer between 1 - 6")
                 continue
             break
@@ -193,18 +205,22 @@ def choose_ancestry(stats):
     else:
         free_boost(stats, boost_options)
         free_boost(stats, boost_options)
-    return ancestries[choice-1]
+    return ancestries[choice - 1]
 
 
 def choose_heritage(ancestry):
     """
     Gets the user's choice of heritage based on their chosen ancestry
 
+    Prompts the user for their heritage based on the ancestry they chose. Uses data returned from the choose_ancestry() function
+
     Parameters:
+    ----------
     ancestry: String
         The ancestry of the character object currently being created
 
     Returns:
+    ----------
     String
         The chosen heritage as an index of the appropriate heritage list
     """
@@ -262,7 +278,7 @@ def choose_heritage(ancestry):
     # Repeatedly prompt the user until they an integer within the range of options
     if ancestry == "Dwarf":
         for i in range(len(dwarf)):
-            print("%i) %s" % (i+1, dwarf[i]))
+            print("%i) %s" % (i + 1, dwarf[i]))
         choice = -1
         while not (1 <= choice <= 8):
             try:
@@ -277,7 +293,7 @@ def choose_heritage(ancestry):
 
     elif ancestry == "Elf":
         for i in range(len(elf)):
-            print("%i) %s" % (i+1, elf[i]))
+            print("%i) %s" % (i + 1, elf[i]))
         choice = -1
         while not (1 <= choice <= 7):
             try:
@@ -292,7 +308,7 @@ def choose_heritage(ancestry):
 
     elif ancestry == "Gnome":
         for i in range(len(gnome)):
-            print("%i) %s" % (i+1, gnome[i]))
+            print("%i) %s" % (i + 1, gnome[i]))
         choice = -1
         while not (1 <= choice <= 6):
             try:
@@ -307,7 +323,7 @@ def choose_heritage(ancestry):
 
     elif ancestry == "Goblin":
         for i in range(len(goblin)):
-            print("%i) %s" % (i+1, goblin[i]))
+            print("%i) %s" % (i + 1, goblin[i]))
         choice = -1
         while not (1 <= choice <= 7):
             try:
@@ -322,7 +338,7 @@ def choose_heritage(ancestry):
 
     elif ancestry == "Halfling":
         for i in range(len(halfling)):
-            print("%i) %s" % (i+1, halfling[i]))
+            print("%i) %s" % (i + 1, halfling[i]))
         choice = -1
         while not (1 <= choice <= 5):
             try:
@@ -337,7 +353,7 @@ def choose_heritage(ancestry):
 
     elif ancestry == "Human":
         for i in range(len(human)):
-            print("%i) %s" % (i+1, human[i]))
+            print("%i) %s" % (i + 1, human[i]))
         choice = -1
         while not (1 <= choice <= 3):
             try:
@@ -355,11 +371,15 @@ def choose_ancestry_feat(ancestry):
     """
     Get the user's choice of ancestry feat
 
+	Prompts the user for their ancestry feat based on the ancestry they chose. Uses data returned from the choose_ancestry() function
+
     Parameters:
+    ----------
     ancestry: String
         The ancestry of the character object currently being created
 
     Returns:
+    ----------
     String
         The chosen heritage as an index of the appropriate heritage list
     """
@@ -555,10 +575,14 @@ def choose_background():
     """
     Get the user's choice of background
 
+    Prompts the user for their background choice. Spelling must exactly match the options in the backgrounds[] list
+
     Parameters:
+    ----------
     None
 
     Returns:
+    ----------
     String
         The chosen background as an index of the appropriate backgrounds list
     """
@@ -689,10 +713,14 @@ def choose_class():
     """
     Gets the user's choice of class
 
+    Prompts the user for their class of choice, based on a list of 12 classes
+
     Parameters:
+    ----------
     None
 
     Returns:
+    ----------
     String
         The chosen class as an index of the appropriate classes list
     """
@@ -734,11 +762,15 @@ def choose_spells(character_class):
     """
     Gets the user's choice of spells
 
+    Prompts the user for their choice of spells. The user must have a class that can use spells, or else this step is skipped
+
     Parameters:
+    ----------
     character_class: String
         The class of the character object currently being created
 
     Returns:
+    ----------
     String
         The chosen spell as an index of the appropriate spells list
     """
@@ -855,13 +887,17 @@ def free_boost(stats, boost_options):
     """
     Utility function to let the user choose free ability boosts
 
+	Used to add stats to classes that are eligable for free stat boosts
+
     Parameters:
+    ----------
     stats: dictionary
         Dictionary containing the character's statistics
     boost_options: list
         List containing all available options for boosting
 
     Returns:
+    ----------
     None
     """
     user_boost_choice = -1
@@ -874,12 +910,14 @@ def free_boost(stats, boost_options):
             break
         except:
             print("Please input a integer between 1 - 6")
-    stats[boost_options[user_boost_choice-1][0:3]] += 2
+    stats[boost_options[user_boost_choice - 1][0:3]] += 2
 
 
 def buy_items(money):
     """
     Utility function to let the user buy items
+
+    Shop system for allowing the user to buy items using a menu and money system
 
     Parameters:
     money: int
@@ -925,12 +963,12 @@ def buy_items(money):
             elif not (1 <= choice <= 7):
                 print("Please input an integer between 1 - 7")
                 continue
-            elif items_name_with_cost[items_name[choice-1]] > remaining_money:
+            elif items_name_with_cost[items_name[choice - 1]] > remaining_money:
                 print("You don't have enough money for that item!")
                 choice = -1  # Resets choice for loop to keep running
                 continue
-            remaining_money -= items_name_with_cost[items_name[choice-1]]  # Deduct money
-            print("Purchased %s x1. Remaining money (in gp): %i" % (items_name[choice-1], remaining_money))
+            remaining_money -= items_name_with_cost[items_name[choice - 1]]  # Deduct money
+            print("Purchased %s x1. Remaining money (in gp): %i" % (items_name[choice - 1], remaining_money))
             cart.append(items_name[choice])  # Add item to cart
             choice = -1  # Resets choice for loop to keep running
         except:
@@ -944,22 +982,26 @@ def view_characters(characters):
     Displays every created character by their name
 
     Parameters:
+    ----------
     characters: list
         List of characters being iterated through for collecting data
 
     Returns:
+    ----------
     None
     """
     if len(characters) == 0:
         print("You haven't created anything yet!")
         return
     for i in range(len(characters)):
-        print("%i) %s" % (i+1, characters[i].name))
+        print("%i) %s" % (i + 1, characters[i].name))
 
 
 def character_details(character):
     """
     Gets detailed statistics for the given character
+
+	Takes character object and prints its attributes
 
     Parameters:
     character: list
@@ -1003,11 +1045,15 @@ def menu(characters):
     """
     Displays menu
 
+  	Allows the user to choose what they want to do next. Nested within a infinite loop until user exits
+
     Parameters:
+    ----------
     character: list
         List of characters being iterated through for collecting data
 
     Returns:
+    ----------
     None
     """
     choice = ""
@@ -1029,33 +1075,35 @@ def progress_bar():
     Cool progress bar to make the user think the code actually does something
 
     Parameters:
-    Absolutely nothing
+    ----------
+    None
 
     Returns:
-    Why would this return something lol
+    ----------
+    None
     """
     print("(█) 10%")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("Enumerating objects")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("Counting objects")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("(████) 40%")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("Delta compression")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("(███████) 70%")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("Compressing objects")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("(█████████) 90%")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("Writing objects")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("Resolving deltas")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("(██████████) 100%")
-    time.sleep(1/10)
+    time.sleep(1 / 10)
     print("\nCharacter creation complete!")
 
 
