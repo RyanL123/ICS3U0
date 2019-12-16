@@ -1,0 +1,12 @@
+ 2019-12-13 13:27:08,945 - DEBUG - Start of program
+ 2019-12-13 13:27:18,893 - DEBUG - Starting choose ancestry
+ 2019-12-13 13:27:20,634 - DEBUG - Chosen ancestry: Dwarf
+ 2019-12-13 13:27:20,634 - DEBUG - Starting choose heritage
+ 2019-12-13 13:27:23,887 - DEBUG - Starting choose background
+ 2019-12-13 13:27:25,981 - DEBUG - Chosen background: Barkeep
+ 2019-12-13 13:27:25,981 - DEBUG - Starting choose class
+ 2019-12-13 13:27:27,202 - DEBUG - Chosen class: Wizard
+ 2019-12-13 13:27:27,203 - DEBUG - Starting choose spells
+ 2019-12-13 13:27:28,104 - DEBUG - Chosen spell: Heal
+ 2019-12-13 13:27:31,197 - INFO - Character list contains 1 character(s)
+ 2019-12-13 13:27:31,841 - DEBUG - End of program
