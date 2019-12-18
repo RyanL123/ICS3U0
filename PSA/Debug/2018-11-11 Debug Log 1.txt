@@ -1,0 +1,6 @@
+ 2018-11-11 12:40:28,031 - INFO - Start of program
+ 2018-11-11 12:40:28,044 - DEBUG - Starting hypotenuse with values 3 and 4
+ 2018-11-11 12:40:28,049 - DEBUG - cSquared == 25
+ 2018-11-11 12:40:28,054 - DEBUG - hypotenuseValue == 5.0
+ 2018-11-11 12:40:28,054 - INFO - End of function
+ 2018-11-11 12:40:28,059 - INFO - End of program
