@@ -4,7 +4,7 @@
 #
 # Author:      767571
 # Created:     Jan-6-20
-# Updated:     Jan-6-20
+# Updated:     Jan-7-20
 # -----------------------------------------------------------------------------
 
 # Apologies in advance to anyone trying to understand this spaghetti code
@@ -13,7 +13,7 @@ import sys
 import time
 import logging
 
-logging.basicConfig(filename="log.txt", level=logging.DEBUG, format=' %(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename="log.txt", level=logging.NOTSET, format=' %(asctime)s - %(levelname)s - %(message)s')
 logging.info("Start of program")
 
 
@@ -83,6 +83,7 @@ def init():
     while user_choice != 'Y' and user_choice != 'N':
         user_choice = input("(Y) Start | (N) Exit\n").upper()
         if user_choice == 'N':
+            logging.info("Exiting program")
             sys.exit()
 
 
@@ -112,7 +113,7 @@ def choose_characteristics():
                 print("Please input a positive integer")
                 continue
             break
-        except:
+        except ValueError:
             print("Please input a positive integer")
     while True:
         try:
@@ -121,7 +122,7 @@ def choose_characteristics():
                 print("Please input a positive integer")
                 continue
             break
-        except:
+        except ValueError:
             print("Please input a positive integer")
 
     return [name, age, height]
@@ -168,7 +169,7 @@ def choose_ancestry(stats):
                 print("Please input an integer between 1 - 6")
                 continue
             break
-        except:
+        except ValueError:
             print("Please input an integer between 1 - 6")
     # Modify stats based on ancestry
     boost_options = [
@@ -232,6 +233,11 @@ def choose_heritage(ancestry):
     ----------
     String
         The chosen heritage as an index of the appropriate heritage list
+
+    Raises
+    ------
+    Value Error
+        if ancestry is not a string
     """
     dwarf = [
         "Ancient-Blooded Dwarf",
@@ -281,9 +287,14 @@ def choose_heritage(ancestry):
         "Versatile Heritage",
         "Wintertouched Heritage"
     ]
-    print("⮘━━━━━━━Choose your heritage━━━━━━━⮚")
 
+    # Make sure parameter is string
+    if not isinstance(ancestry, str):
+        logging.critical("Expecting ancestry to be a string, but found " + str(type(ancestry)) + " instead")
+        raise TypeError("Expecting ancestry to be a string")
     logging.debug("Starting choose ancestry with the current ancestry: " + ancestry)
+
+    print("⮘━━━━━━━Choose your heritage━━━━━━━⮚")
 
     # Displays the appropriate heritage for the given ancestry
     # Repeatedly prompt the user until they an integer within the range of options
@@ -298,7 +309,7 @@ def choose_heritage(ancestry):
                     print("Please input an integer between 1 - 8")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 8")
         logging.debug("Chosen heritage: " + dwarf[choice - 1])
         return dwarf[choice - 1]
@@ -314,7 +325,7 @@ def choose_heritage(ancestry):
                     print("Please input an integer between 1 - 7")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 7")
         logging.debug("Chosen heritage: " + elf[choice - 1])
         return elf[choice - 1]
@@ -330,7 +341,7 @@ def choose_heritage(ancestry):
                     print("Please input an integer between 1 - 6")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 6")
         logging.debug("Chosen heritage: " + gnome[choice - 1])
         return gnome[choice - 1]
@@ -346,7 +357,7 @@ def choose_heritage(ancestry):
                     print("Please input an integer between 1 - 7")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 7")
         logging.debug("Chosen heritage: " + goblin[choice - 1])
         return goblin[choice - 1]
@@ -362,7 +373,7 @@ def choose_heritage(ancestry):
                     print("Please input an integer between 1 - 5")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 5")
         logging.debug("Chosen heritage: " + halfling[choice - 1])
         return halfling[choice - 1]
@@ -378,7 +389,7 @@ def choose_heritage(ancestry):
                     print("Please input an integer between 1 - 3")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 3")
         logging.debug("Chosen heritage: " + human[choice - 1])
         return human[choice - 1]
@@ -400,6 +411,11 @@ def choose_ancestry_feat(ancestry):
     ----------
     String
         The chosen heritage as an index of the appropriate heritage list
+
+    Raises:
+    ------
+    Value Error
+        if ancestry is not a string
     """
     dwarf = [
         "Avenge In Glory",
@@ -494,6 +510,12 @@ def choose_ancestry_feat(ancestry):
         "Viking Shieldbearer",
         "Witch Warden"
     ]
+
+    # Make sure parameter is string
+    if not isinstance(ancestry, str):
+        logging.critical("Expecting ancestry to be a string, but found " + str(type(ancestry)) + " instead")
+        raise TypeError("Expecting ancestry to be a string")
+
     print("⮘━━━━━━━Choose your ancestry feat━━━━━━━⮚")
 
     # Displays the appropriate heritage for the given ancestry
@@ -509,7 +531,7 @@ def choose_ancestry_feat(ancestry):
                     print("Please input an integer between 1 - 10")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 10")
         logging.debug("Chosen ancestry feat: " + dwarf[choice - 1])
         return dwarf[choice - 1]
@@ -525,7 +547,7 @@ def choose_ancestry_feat(ancestry):
                     print("Please input an integer between 1 - 12")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 12")
         logging.debug("Chosen ancestry feat: " + elf[choice - 1])
         return elf[choice - 1]
@@ -541,7 +563,7 @@ def choose_ancestry_feat(ancestry):
                     print("Please input an integer between 1 - 15")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 15")
         logging.debug("Chosen ancestry feat: " + gnome[choice - 1])
         return gnome[choice - 1]
@@ -557,7 +579,7 @@ def choose_ancestry_feat(ancestry):
                     print("Please input an integer between 1 - 12")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 12")
         logging.debug("Chosen ancestry feat: " + goblin[choice - 1])
         return goblin[choice - 1]
@@ -573,7 +595,7 @@ def choose_ancestry_feat(ancestry):
                     print("Please input an integer between 1 - 12")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 12")
         logging.debug("Chosen ancestry feat: " + halfling[choice - 1])
         return halfling[choice - 1]
@@ -589,7 +611,7 @@ def choose_ancestry_feat(ancestry):
                     print("Please input an integer between 1 - 19")
                     continue
                 break
-            except:
+            except ValueError:
                 print("Please input an integer between 1 - 19")
         logging.debug("Chosen ancestry feat: " + human[choice - 1])
         return human[choice - 1]
@@ -778,7 +800,7 @@ def choose_class():
                 print("Please input an integer between 1 - 12")
                 continue
             break
-        except:
+        except ValueError:
             print("Please input an integer between 1 - 12")
     logging.debug("Chosen class: " + classes[choice - 1])
     return classes[choice - 1]
@@ -797,8 +819,13 @@ def choose_spells(character_class):
 
     Returns:
     ----------
-    String
-        The chosen spell as an index of the appropriate spells list
+    List
+        The chosen spell embedded in a list
+
+    Raises:
+    ------
+    Value Error
+        if character_class is not a string
     """
     spells = [
         "Acid Splash",
@@ -885,6 +912,10 @@ def choose_spells(character_class):
         "Ventriloquism"
     ]
 
+    if not isinstance(character_class, str):
+        logging.critical("Expecting class to be a string, but found " + str(type(character_class)) + " instead")
+        raise TypeError("Expecting class to be a string")
+
     # These classes cannot choose spells
     invalid_classes = ["ALCHEMIST", "BARBARIAN", "FIGHTER", "MONK", "RANGER", "ROGUE"]
     if character_class.upper() in invalid_classes:
@@ -927,8 +958,23 @@ def free_boost(stats, boost_options):
 
     Returns:
     ----------
+
+    Raises:
+    ------
+    Value Error
+        if stats is not a dictionary
+    Value Error
+        if boost_options is not a dictionary
     None
     """
+
+    if not isinstance(stats, dict):
+        logging.critical("Expected stats to be a dictionary, but found " + str(type(stats)) + " instead")
+        raise ValueError("Expected stats to be a dictionary")
+    if not isinstance(boost_options, list):
+        logging.critical("Expected boost_options to be a list, but found " + str(type(boost_options)) + " instead")
+        raise ValueError("Expected stats to be a list")
+
     user_boost_choice = -1
     while not (1 <= user_boost_choice <= 6):
         try:
@@ -937,7 +983,7 @@ def free_boost(stats, boost_options):
                 print("Please input an integer between 1 - 6")
                 continue
             break
-        except:
+        except ValueError:
             print("Please input a integer between 1 - 6")
     logging.debug("Adding 2 points for " + boost_options[user_boost_choice - 1])
     stats[boost_options[user_boost_choice - 1][0:3]] += 2
@@ -978,6 +1024,10 @@ def buy_items(money):
     cart = []
     remaining_money = money
 
+    if not isinstance(money, int):
+        logging.critical("Expecting money to be an int, but found " + str(type(money)) + " instead")
+        raise ValueError("Expecting money to be an int")
+
     # prints to the user all available options
     print("⮘━━━━━━━Buy items━━━━━━━⮚")
     for i in range(len(items_name)):
@@ -1001,7 +1051,7 @@ def buy_items(money):
             print("Purchased %s x1. Remaining money (in gp): %i" % (items_name[choice - 1], remaining_money))
             cart.append(items_name[choice])  # Add item to cart
             choice = -1  # Resets choice for loop to keep running
-        except:
+        except ValueError:
             print("Please input an integer between 1 - 7")
 
     logging.debug(str(len(cart)) + " items were bought")
@@ -1021,11 +1071,21 @@ def view_characters(characters):
     Returns:
     ----------
     None
+
+    Raises:
+    ------
+    Value Error
+        if characters is not a list
     """
+
+    if not isinstance(characters, list):
+        logging.critical("Expecting characters to be a list, but found " + str(type(characters)) + " instead")
+        raise ValueError("Expecting characters to be a list")
+
     if len(characters) == 0:
         print("You haven't created anything yet!")
         return
-    logging.debug(str(len(characters)) + " have been created")
+    logging.debug("Viewing characters, " + str(len(characters)) + " characters have been created")
     for i in range(len(characters)):
         print("%i) %s" % (i + 1, characters[i].name))
 
@@ -1042,7 +1102,17 @@ def character_details(character):
 
     Returns:
     None
+
+    Raises:
+    ------
+    Value Error
+        if character is not a list
     """
+
+    if not isinstance(character, list):
+        logging.critical("Expecting list, but found" + str(type(character)) + " instead")
+        raise ValueError("Expecting character to be a character object")
+
     character_name = input("Please input the name of the character (Must be exact same): ")
     logging.info("Getting character details for " + character_name)
     for i in range(len(character)):
@@ -1095,6 +1165,7 @@ def menu(characters):
         choice = input("(1) Create new character | (2) View created characters | (3) View Character Details | "
                        "(4) Exit Program: ")
     if choice == "4":
+        logging.info("Exiting program")
         sys.exit()
     elif choice == "3":
         character_details(characters)
@@ -1139,6 +1210,17 @@ def progress_bar():
     print("(██████████) 100%")
     time.sleep(1 / 10)
     print("\nCharacter creation complete!")
+
+
+# Testing
+# assert choose_heritage("Dwarf") == "Ancient-Blooded Dwarf", \
+#     "Expecting Ancient-Blooded Dwarf when option 1 is chosen under the Dwarf ancestry"
+#
+# assert choose_spells("Wizard") == ["Heal"], \
+#     "Expecting function to correctly return heal when the wizard class is chosen and heal is chosen in selecting spells"
+#
+# assert choose_ancestry_feat("Elf") == "Elven Lore", \
+#     "Expecting Elven Lore when option 3 is chosen under the Elf ancestry"
 
 
 # Main driver code
@@ -1209,3 +1291,4 @@ def main():
 
 
 main()
+
