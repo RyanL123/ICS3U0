@@ -4,7 +4,7 @@
 #
 # Author:      767571
 # Created:     Jan-6-20
-# Updated:     Jan-7-20
+# Updated:     Jan-8-20
 # -----------------------------------------------------------------------------
 
 # Apologies in advance to anyone trying to understand this spaghetti code
@@ -1084,8 +1084,9 @@ def view_characters(characters):
 
     if len(characters) == 0:
         print("You haven't created anything yet!")
+        logging.debug("No character have been created yet")
         return
-    logging.debug("Viewing characters, " + str(len(characters)) + " characters have been created")
+    logging.debug("Viewing character(s), " + str(len(characters)) + " characters have been created")
     for i in range(len(characters)):
         print("%i) %s" % (i + 1, characters[i].name))
 
