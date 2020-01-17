@@ -4,7 +4,7 @@
 #
 # Author:      767571
 # Created:     Jan-6-20
-# Updated:     Jan-7-20
+# Updated:     Jan-16-20
 # -----------------------------------------------------------------------------
 
 # Apologies in advance to anyone trying to understand this spaghetti code
@@ -143,6 +143,11 @@ def choose_ancestry(stats):
     ----------
     String
         The chosen ancestry as an index of the ancestries list
+
+    Raises:
+    ------
+    TypeError
+        if stats is not a dictionary
     """
     ancestries = [
         "Dwarf",
@@ -153,6 +158,10 @@ def choose_ancestry(stats):
         "Human",
     ]
     print("⮘━━━━━━━Choose your ancestry━━━━━━━⮚")
+
+    if not isinstance(stats, dict):
+        logging.critical("Expecting stats to be a dictionary, but found " + str(type(stats)) + " instead")
+        raise TypeError("Expecting stats to be a dictionary")
 
     # prints to the user all available options
     for i in range(len(ancestries)):
@@ -217,6 +226,28 @@ def choose_ancestry(stats):
     logging.debug("Current stats: " + str(stats))
     return ancestries[choice - 1]
 
+# assert choose_ancestry(
+#     {
+#         "Str": 10,
+#         "Dex": 10,
+#         "Con": 10,
+#         "Int": 10,
+#         "Wis": 10,
+#         "Cha": 10
+#     }
+# ) == "Dwarf", "Expecting Dwarf to be returned when option 1 is chosen"
+
+# assert choose_ancestry(
+#     {
+#         "Str": 10,
+#         "Dex": 10,
+#         "Con": 10,
+#         "Int": 10,
+#         "Wis": 10,
+#         "Cha": 10
+#     }
+# ) == "Elf", "Expecting Dwarf to be returned when option 1 is chosen"
+
 
 def choose_heritage(ancestry):
     """
@@ -236,7 +267,7 @@ def choose_heritage(ancestry):
 
     Raises
     ------
-    Value Error
+    TypeError
         if ancestry is not a string
     """
     dwarf = [
@@ -394,6 +425,12 @@ def choose_heritage(ancestry):
         logging.debug("Chosen heritage: " + human[choice - 1])
         return human[choice - 1]
 
+# assert choose_heritage("Dwarf") == "Ancient-Blooded Dwarf", \
+#     "Expecting Ancient-Blooded Dwarf when option 1 is chosen under the Dwarf ancestry"
+
+# assert choose_heritage("Dwarf") == "Anvil Dwarf", \
+#     "Expecting Ancient-Blooded Dwarf when option 1 is chosen under the Dwarf ancestry"
+
 
 def choose_ancestry_feat(ancestry):
     """
@@ -414,7 +451,7 @@ def choose_ancestry_feat(ancestry):
 
     Raises:
     ------
-    Value Error
+    TypeError
         if ancestry is not a string
     """
     dwarf = [
@@ -617,6 +654,12 @@ def choose_ancestry_feat(ancestry):
         return human[choice - 1]
 
 
+# assert choose_ancestry_feat("Dwarf") == "Avenge In Glory", \
+#     "Expecting Avenge In Glory when option 1 is chosen under the Dwarf ancestry"
+
+# assert choose_ancestry_feat("Dwarf") == "Grim Insight", \
+#     "Expecting Avenge In Glory when option 1 is chosen under the Dwarf ancestry"
+
 def choose_background():
     """
     Get the user's choice of background
@@ -755,6 +798,9 @@ def choose_background():
     logging.debug("Chosen background: " + backgrounds[index])
     return backgrounds[index]
 
+# assert choose_background() == "Barkeep", "Expecting barkeep to be returned when barkeep is chosen"
+# assert choose_background() == "Traveler", "Expecting barkeep to be returned when barkeep is chosen"
+
 
 def choose_class():
     """
@@ -806,6 +852,10 @@ def choose_class():
     return classes[choice - 1]
 
 
+# assert choose_class() == "Wizard", "Expecting wizard to be returned when 12 is selected"
+# assert choose_class() == "Rogue", "Expecting wizard to be returned when 12 is selected"
+
+
 def choose_spells(character_class):
     """
     Gets the user's choice of spells
@@ -824,7 +874,7 @@ def choose_spells(character_class):
 
     Raises:
     ------
-    Value Error
+    TypeError
         if character_class is not a string
     """
     spells = [
@@ -942,6 +992,12 @@ def choose_spells(character_class):
     logging.debug("Chosen spell: " + spells[index])
     return [spells[index]]
 
+# assert choose_spells("Wizard") == ["Heal"], \
+#     "Expecting function to correctly return heal when the wizard class is chosen and heal is chosen in selecting spells"
+
+# assert choose_spells("Wizard") == ["Sleep"], \
+#     "Expecting function to correctly return heal when the wizard class is chosen and heal is chosen in selecting spells"
+
 
 def free_boost(stats, boost_options):
     """
@@ -958,22 +1014,22 @@ def free_boost(stats, boost_options):
 
     Returns:
     ----------
+    None
 
     Raises:
     ------
-    Value Error
+    TypeError
         if stats is not a dictionary
-    Value Error
+    TypeError
         if boost_options is not a dictionary
-    None
     """
 
     if not isinstance(stats, dict):
         logging.critical("Expected stats to be a dictionary, but found " + str(type(stats)) + " instead")
-        raise ValueError("Expected stats to be a dictionary")
+        raise TypeError("Expected stats to be a dictionary")
     if not isinstance(boost_options, list):
         logging.critical("Expected boost_options to be a list, but found " + str(type(boost_options)) + " instead")
-        raise ValueError("Expected stats to be a list")
+        raise TypeError("Expected stats to be a list")
 
     user_boost_choice = -1
     while not (1 <= user_boost_choice <= 6):
@@ -995,13 +1051,20 @@ def buy_items(money):
 
     Shop system for allowing the user to buy items using a menu and money system
 
-    Parameters:
+    Parameters
+    ----------
     money: int
         Amount of money user has
 
-    Returns:
+    Returns
+    -------
     List:
         list of items the player bought
+
+    Raises:
+    ------
+    TypeError
+        if money is not an int
     """
     items_name_with_cost = {
         "Jellyfish Lamp": 2,
@@ -1026,7 +1089,7 @@ def buy_items(money):
 
     if not isinstance(money, int):
         logging.critical("Expecting money to be an int, but found " + str(type(money)) + " instead")
-        raise ValueError("Expecting money to be an int")
+        raise TypeError("Expecting money to be an int")
 
     # prints to the user all available options
     print("⮘━━━━━━━Buy items━━━━━━━⮚")
@@ -1049,7 +1112,7 @@ def buy_items(money):
                 continue
             remaining_money -= items_name_with_cost[items_name[choice - 1]]  # Deduct money
             print("Purchased %s x1. Remaining money (in gp): %i" % (items_name[choice - 1], remaining_money))
-            cart.append(items_name[choice])  # Add item to cart
+            cart.append(items_name[choice-1])  # Add item to cart
             choice = -1  # Resets choice for loop to keep running
         except ValueError:
             print("Please input an integer between 1 - 7")
@@ -1057,6 +1120,13 @@ def buy_items(money):
     logging.debug(str(len(cart)) + " items were bought")
     logging.debug("There is " + str(remaining_money) + " gp remaining")
     return [cart, remaining_money]
+
+
+# assert buy_items(40) == [["Final Blade"], 0], \
+#     "Expecting only final blade to be in inventory when only one final blade is purchased"
+
+# assert buy_items(40) == [["Final Blade, Pesh"], 0], \
+#     "Expecting only final blade to be in inventory when only one final blade is purchased"
 
 
 def view_characters(characters):
@@ -1074,13 +1144,13 @@ def view_characters(characters):
 
     Raises:
     ------
-    Value Error
+    TypeError
         if characters is not a list
     """
 
     if not isinstance(characters, list):
         logging.critical("Expecting characters to be a list, but found " + str(type(characters)) + " instead")
-        raise ValueError("Expecting characters to be a list")
+        raise TypeError("Expecting characters to be a list")
 
     if len(characters) == 0:
         print("You haven't created anything yet!")
@@ -1105,13 +1175,13 @@ def character_details(character):
 
     Raises:
     ------
-    Value Error
+    TypeError
         if character is not a list
     """
 
     if not isinstance(character, list):
         logging.critical("Expecting list, but found" + str(type(character)) + " instead")
-        raise ValueError("Expecting character to be a character object")
+        raise TypeError("Expecting character to be a list")
 
     character_name = input("Please input the name of the character (Must be exact same): ")
     logging.info("Getting character details for " + character_name)
@@ -1159,7 +1229,16 @@ def menu(characters):
     Returns:
     ----------
     None
+
+    Raises:
+    ------
+    TypeError
+        if character is not a list
     """
+    if not isinstance(characters, list):
+        logging.critical("Expecting list, but found" + str(type(characters)) + " instead")
+        raise TypeError("Expecting character to be a list")
+
     choice = ""
     while choice != '1' and choice != '2' and choice != '3' and choice != '4':
         choice = input("(1) Create new character | (2) View created characters | (3) View Character Details | "
@@ -1210,17 +1289,6 @@ def progress_bar():
     print("(██████████) 100%")
     time.sleep(1 / 10)
     print("\nCharacter creation complete!")
-
-
-# Testing
-# assert choose_heritage("Dwarf") == "Ancient-Blooded Dwarf", \
-#     "Expecting Ancient-Blooded Dwarf when option 1 is chosen under the Dwarf ancestry"
-#
-# assert choose_spells("Wizard") == ["Heal"], \
-#     "Expecting function to correctly return heal when the wizard class is chosen and heal is chosen in selecting spells"
-#
-# assert choose_ancestry_feat("Elf") == "Elven Lore", \
-#     "Expecting Elven Lore when option 3 is chosen under the Elf ancestry"
 
 
 # Main driver code

@@ -1,30 +1,29 @@
- 2020-01-07 20:31:01,574 - INFO - Start of program
- 2020-01-07 20:31:05,670 - INFO - Starting to choose ancestry
- 2020-01-07 20:31:05,671 - DEBUG - Starting choose ancestry with the current stats: {'Str': 10, 'Dex': 10, 'Con': 10, 'Int': 10, 'Wis': 10, 'Cha': 10}
- 2020-01-07 20:31:07,714 - DEBUG - Adding 2 points for Dexterity
- 2020-01-07 20:31:07,714 - DEBUG - Chosen ancestry: Gnome
- 2020-01-07 20:31:07,714 - DEBUG - Current stats: {'Str': 8, 'Dex': 12, 'Con': 12, 'Int': 10, 'Wis': 10, 'Cha': 12}
- 2020-01-07 20:31:07,714 - INFO - Completed choosing ancestry
- 2020-01-07 20:31:07,714 - INFO - Starting to choose heritage
- 2020-01-07 20:31:07,714 - DEBUG - Starting choose ancestry with the current ancestry: Gnome
- 2020-01-07 20:31:08,527 - DEBUG - Chosen heritage: Vivacious Gnome
- 2020-01-07 20:31:08,527 - INFO - Completed choosing heritage
- 2020-01-07 20:31:08,527 - INFO - Starting to choose ancestry feat
- 2020-01-07 20:31:09,615 - DEBUG - Chosen ancestry feat: Natural Performer
- 2020-01-07 20:31:09,615 - INFO - Completed choosing ancestry feat
- 2020-01-07 20:31:09,615 - INFO - Starting to choose background
- 2020-01-07 20:31:11,478 - DEBUG - Chosen background: Barkeep
- 2020-01-07 20:31:11,478 - INFO - Completed choosing background
- 2020-01-07 20:31:11,478 - INFO - Starting to choose class
- 2020-01-07 20:31:12,431 - DEBUG - Chosen class: Wizard
- 2020-01-07 20:31:12,431 - INFO - Completed choosing class
- 2020-01-07 20:31:12,431 - INFO - Starting to choose spells
- 2020-01-07 20:31:12,431 - INFO - The chosen class Wizard needs to choose spells
- 2020-01-07 20:31:13,869 - DEBUG - Chosen spell: Heal
- 2020-01-07 20:31:13,869 - INFO - Completed choosing spells
- 2020-01-07 20:31:13,869 - INFO - Starting to buy items
- 2020-01-07 20:31:15,387 - DEBUG - 1 items were bought
- 2020-01-07 20:31:15,388 - DEBUG - There is 10 gp remaining
- 2020-01-07 20:31:15,388 - INFO - Completed buying items
- 2020-01-07 20:31:18,544 - INFO - Getting character details for a
- 2020-01-07 20:31:21,089 - INFO - Exiting program
+ 2020-01-16 20:03:26,337 - INFO - Start of program
+ 2020-01-16 20:03:30,668 - INFO - Starting to choose ancestry
+ 2020-01-16 20:03:30,668 - DEBUG - Starting choose ancestry with the current stats: {'Str': 10, 'Dex': 10, 'Con': 10, 'Int': 10, 'Wis': 10, 'Cha': 10}
+ 2020-01-16 20:03:32,269 - DEBUG - Adding 2 points for Constitution
+ 2020-01-16 20:03:32,269 - DEBUG - Chosen ancestry: Elf
+ 2020-01-16 20:03:32,269 - DEBUG - Current stats: {'Str': 10, 'Dex': 12, 'Con': 10, 'Int': 12, 'Wis': 10, 'Cha': 10}
+ 2020-01-16 20:03:32,269 - INFO - Completed choosing ancestry
+ 2020-01-16 20:03:32,269 - INFO - Starting to choose heritage
+ 2020-01-16 20:03:32,269 - DEBUG - Starting choose ancestry with the current ancestry: Elf
+ 2020-01-16 20:03:32,698 - DEBUG - Chosen heritage: Arctic Elf
+ 2020-01-16 20:03:32,698 - INFO - Completed choosing heritage
+ 2020-01-16 20:03:32,698 - INFO - Starting to choose ancestry feat
+ 2020-01-16 20:03:33,224 - DEBUG - Chosen ancestry feat: Elven Lore
+ 2020-01-16 20:03:33,224 - INFO - Completed choosing ancestry feat
+ 2020-01-16 20:03:33,224 - INFO - Starting to choose background
+ 2020-01-16 20:03:35,201 - DEBUG - Chosen background: Barkeep
+ 2020-01-16 20:03:35,201 - INFO - Completed choosing background
+ 2020-01-16 20:03:35,201 - INFO - Starting to choose class
+ 2020-01-16 20:03:35,710 - DEBUG - Chosen class: Barbarian
+ 2020-01-16 20:03:35,710 - INFO - Completed choosing class
+ 2020-01-16 20:03:35,710 - INFO - Starting to choose spells
+ 2020-01-16 20:03:35,710 - INFO - Completed choosing spells
+ 2020-01-16 20:03:35,710 - INFO - Starting to buy items
+ 2020-01-16 20:03:37,532 - DEBUG - 2 items were bought
+ 2020-01-16 20:03:37,532 - DEBUG - There is 12 gp remaining
+ 2020-01-16 20:03:37,532 - INFO - Completed buying items
+ 2020-01-16 20:03:39,474 - DEBUG - Viewing characters, 1 characters have been created
+ 2020-01-16 20:03:42,629 - INFO - Getting character details for asdf
+ 2020-01-16 20:03:43,480 - INFO - Exiting program
