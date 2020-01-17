@@ -1154,8 +1154,9 @@ def view_characters(characters):
 
     if len(characters) == 0:
         print("You haven't created anything yet!")
+        logging.debug("No character have been created yet")
         return
-    logging.debug("Viewing characters, " + str(len(characters)) + " characters have been created")
+    logging.debug("Viewing character(s), " + str(len(characters)) + " characters have been created")
     for i in range(len(characters)):
         print("%i) %s" % (i + 1, characters[i].name))
 
